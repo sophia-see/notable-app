@@ -3,7 +3,6 @@
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/custom-ui/auth-form'
 import { Button } from '@/components/custom-ui/auth-button'
 import { Input } from '@/components/ui/input'
-import { passwordSchema } from '@/validation/passwordSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -12,22 +11,36 @@ import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
 import { FaGoogle } from "react-icons/fa";
 import { CiCircleInfo } from "react-icons/ci";
+import { passwordMatchSchema } from '@/validation/passwordMatchSchema'
+import { registerUser } from '@/auth-actions'
+import { redirect } from 'next/navigation'
 
 const formSchema = z.object({
   email: z.string().email(),
-  password: passwordSchema
-})
+}).and(passwordMatchSchema);
+
 export default function RegisterForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      password: ""
+      password: "",
+      passwordConfirm: ""
     }
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const {email, password, passwordConfirm} = data;
 
+    const response = await registerUser({email, password, passwordConfirm});
+
+    if (response?.error) {
+      form.setError("email", {
+        message: response?.message
+      })
+    } else {
+      redirect("/login")
+    }
   }
 
   return (
@@ -63,7 +76,24 @@ export default function RegisterForm() {
             </FormItem>
           )}
         />
-        <Button className='w-full'>Sign up</Button>
+        <FormField
+          control={form.control}
+          name="passwordConfirm"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Confirm Password</FormLabel>
+              <FormControl>
+                <Input type="password" {...field} />
+              </FormControl>
+              <FormDescription className='flex items-center gap-2'>
+                <CiCircleInfo />
+                Passwords must match
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type='submit' className='w-full'>Sign up</Button>
         <div className='flex flex-col items-center gap-4'>
           <Separator />
           <span className='mt-2 text-neutral-600 text-preset-5'>Or log in with:</span>

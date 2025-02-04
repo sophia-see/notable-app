@@ -11,6 +11,8 @@ import { z } from 'zod'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
 import { FaGoogle } from "react-icons/fa";
+import { loginUser } from '@/auth-actions'
+import { redirect } from 'next/navigation'
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -25,8 +27,19 @@ export default function LoginForm() {
     }
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const {email, password} = data;
 
+    const response = await loginUser({email, password});
+
+    if (response?.error) {
+      form.setError("root", {
+        message: response?.message
+      })
+    } else {
+      form.reset();
+      redirect("/all")
+    }
   }
 
   return (
@@ -61,7 +74,10 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button className='w-full'>Login</Button>
+        {!!form.formState.errors.root?.message && 
+          <FormMessage>{form.formState.errors.root.message}</FormMessage>
+        }
+        <Button type='submit' className='w-full'>Login</Button>
         <div className='flex flex-col items-center gap-4'>
           <Separator />
           <span className='mt-2 text-neutral-600 text-preset-5'>Or log in with:</span>
@@ -70,10 +86,6 @@ export default function LoginForm() {
             Google
           </Button>
           <Separator />
-        </div>
-        <div className='text-center text-neutral-600  text-preset-5'>
-          Forgot your password?{" "}
-          <Link href={"/reset-password"} className='text-neutral-950 hover:underline'>Reset password</Link>
         </div>
         <div className='text-center text-neutral-600  text-preset-5'>
           No account yet?{" "}

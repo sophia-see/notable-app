@@ -1,6 +1,6 @@
 "use server"
 
-import { auth, signIn } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import db from "@/db/drizzle";
 import { usersTable } from "@/db/usersSchema";
 import { passwordMatchSchema } from "@/validation/passwordMatchSchema";
@@ -186,4 +186,12 @@ export const updatePassword = async ({token, password, passwordConfirm}: UpdateP
 
     await db.delete(passwordResetTokensTable).where(eq(passwordResetTokensTable.id, passwordResetToken.id))
   }
+}
+
+export const loginWithGoogle = async () => {
+  await signIn("google")
+}
+
+export const logout = async () => {
+  await signOut();
 }

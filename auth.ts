@@ -4,9 +4,30 @@ import db from "./db/drizzle"
 import { usersTable } from "./db/usersSchema"
 import { eq } from "drizzle-orm"
 import { compare } from "bcryptjs"
+import Google from "next-auth/providers/google"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  callbacks: {
+    jwt({token, user}){
+      if (user)
+        token.id = user.id
+
+      return token
+    },
+    session({session, token}){
+      session.user.id = token.id as string
+
+      return session
+    }
+  },
   providers: [
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      authorization: {
+        params: { prompt: "select_account" }
+      }
+    }),
     Credentials({
       credentials: {
         email: {},

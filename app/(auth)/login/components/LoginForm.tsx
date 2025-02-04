@@ -11,7 +11,7 @@ import { z } from 'zod'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
 import { FaGoogle } from "react-icons/fa";
-import { loginUser } from '@/auth-actions'
+import { loginUser, loginWithGoogle } from '@/auth-actions'
 import { redirect } from 'next/navigation'
 
 const formSchema = z.object({
@@ -42,6 +42,13 @@ export default function LoginForm() {
     }
   }
 
+  const onLoginWithGoogle = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const res = await loginWithGoogle();
+
+    console.log({res})
+  };
+  
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
@@ -81,10 +88,10 @@ export default function LoginForm() {
         <div className='flex flex-col items-center gap-4'>
           <Separator />
           <span className='mt-2 text-neutral-600 text-preset-5'>Or log in with:</span>
-          <Button variant={"outline"} className='w-full'>
+          <Button onClick={onLoginWithGoogle} variant={"outline"} className='w-full'>
             <FaGoogle />
             Google
-          </Button>
+          </Button>  
           <Separator />
         </div>
         <div className='text-center text-neutral-600  text-preset-5'>

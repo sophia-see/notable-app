@@ -2,8 +2,32 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import Image from 'next/image'
 import React from 'react'
 import ResetPasswordForm from './components/ResetPasswordForm'
+import db from '@/db/drizzle'
+import { passwordResetTokensTable } from '@/db/passwordResetTokensSchema'
+import { eq } from "drizzle-orm";
+import Link from 'next/link'
 
-export default function ResetPasswordPage() {
+interface ResetPasswordPageProps {
+  searchParams: Promise<{
+    token?: string;
+  }>
+}
+
+export default async function ResetPasswordPage({searchParams}: ResetPasswordPageProps) {
+  const searchParamsValue = await searchParams;
+  const { token } = searchParamsValue;
+  let isTokenValid = false
+
+  if (token) {
+    const [passwordResetToken] = await db.select().from(passwordResetTokensTable).where(eq(passwordResetTokensTable.token, token));
+
+    const now = Date.now();
+
+    if (!!passwordResetToken?.tokenExpiry && now < passwordResetToken.tokenExpiry.getTime()) {
+      isTokenValid = true;
+    }
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -16,14 +40,23 @@ export default function ResetPasswordPage() {
           alt='notable logo'
         />
         <CardTitle>
-          Reset Your Password
+          {isTokenValid ? "Reset Your Password" : "Password reset link is invalid or expired"}
         </CardTitle>
-        <CardDescription>
-          Choose a new password to secure your account.
-        </CardDescription>
+        {isTokenValid && 
+          <CardDescription>
+            Choose a new password to secure your account.
+          </CardDescription>
+        }
       </CardHeader>
       <CardContent>
-        <ResetPasswordForm />
+        {isTokenValid 
+          ? <ResetPasswordForm token={token as string} /> 
+          : (
+            <div className='flex justify-center'>
+              <Link href={"/forgot-password"} className='underline'>Request another password reset link</Link>
+            </div>
+          )
+        }
       </CardContent>
     </Card>
   )

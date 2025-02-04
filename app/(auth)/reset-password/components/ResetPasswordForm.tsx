@@ -8,9 +8,18 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { passwordMatchSchema } from '@/validation/passwordMatchSchema'
+import { updatePassword } from '@/auth-actions'
+import { useToast } from '@/hooks/use-toast'
+import Link from 'next/link'
 
 const formSchema = passwordMatchSchema
-export default function ResetPasswordForm() {
+
+interface ResetPasswordFormProps {
+  token: string;
+}
+export default function ResetPasswordForm({token}: ResetPasswordFormProps) {
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -19,8 +28,35 @@ export default function ResetPasswordForm() {
     }
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const {password, passwordConfirm} = data;
 
+    const response = await updatePassword({
+      token,
+      password,
+      passwordConfirm
+    });
+
+    if (response?.tokenInvalid)
+      window.location.reload();
+
+    if (response?.error) {
+      form.setError("root", {
+        message: response?.message
+      })
+    } else {
+      toast({
+        title: "Password Reset",
+        description: (
+          <div className=''>
+            Your password has been updated. Click here to{" "}<Link href={"/login"} className='underline'>login</Link>
+          </div>
+        ),
+        duration: Infinity
+      })
+
+      form.reset();
+    }
   }
 
   return (

@@ -7,5 +7,5 @@ export const passwordResetTokensTable = pgTable("passwordResetTokens", {
     onDelete: "cascade"
   }).unique(),
   token: text("password"),
-  token_expiry: timestamp("created_at")
+  tokenExpiry: timestamp("token_expiry")
 });

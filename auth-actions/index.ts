@@ -1,12 +1,17 @@
 "use server"
 
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 import db from "@/db/drizzle";
 import { usersTable } from "@/db/usersSchema";
 import { passwordMatchSchema } from "@/validation/passwordMatchSchema";
 import { passwordSchema } from "@/validation/passwordSchema";
-import { compare, hash } from "bcryptjs";
+import { hash } from "bcryptjs";
 import { z } from "zod";
+import { eq } from "drizzle-orm";
+import { randomBytes } from "crypto";
+import { passwordResetTokensTable } from "@/db/passwordResetTokensSchema";
+import { mailer } from "@/lib/email";
+import { redirect } from "next/dist/server/api-utils";
 
 interface RegisterUserProps {
   email: string;
@@ -82,5 +87,103 @@ export const loginUser = async ({email, password}: LoginUserProps) => {
       error: true,
       message: "Incorrect email or password"
     }
+  }
+}
+
+export const resetPassword = async (emailAddress: string) => {
+  const session = await auth();
+
+  if (!session?.user?.email)
+    return {
+      error: true,
+      message: "You are already logged in"
+    }
+
+  const [user] = await db.select({
+      id: usersTable.id
+  }).from(usersTable).where(eq(usersTable.email, emailAddress));
+
+  if (!user)
+    return;
+
+  const token = randomBytes(32).toString("hex");
+  const tokenExpiry = new Date(Date.now() + 3600000);
+
+  await db.insert(passwordResetTokensTable).values({
+    userId: user.id,
+    token,
+    tokenExpiry
+  }).onConflictDoUpdate({
+    target: passwordResetTokensTable.userId,
+    set: {
+      token,
+      tokenExpiry
+    }
+  })
+
+  const resetLink = `${process.env.BASE_URL}/reset-password?token=${token}`;
+
+  await mailer.sendMail({
+    from: "test@resend.dev",
+    subject: "Your password reset request",
+    to: emailAddress,
+    html: `Hey, ${emailAddress}! You request to reset your password. Here's your password reset link. This link will expire in 1 hour: <a href="${resetLink}">${resetLink}</a>`
+  })
+}
+
+interface UpdatePasswordProps {
+  token: string;
+  password: string;
+  passwordConfirm: string;
+}
+
+export const updatePassword = async ({token, password, passwordConfirm}: UpdatePasswordProps) => {
+  const passwordValidation = passwordMatchSchema.safeParse({
+    password,
+    passwordConfirm
+  });
+
+  if (!passwordValidation.success) {
+    return {
+      error: true,
+      message: passwordValidation.error.issues[0]?.message ?? "An error occurred."
+    }
+  }
+
+  const session = await auth();
+
+  if (!session?.user?.email) {
+    return {
+      error: true,
+      message: "Already logged in. Please log out to change your password."
+    }
+  }
+
+  let isTokenValid = false
+
+  if (token) {
+    const [passwordResetToken] = await db.select().from(passwordResetTokensTable).where(eq(passwordResetTokensTable.token, token));
+
+    const now = Date.now();
+
+    if (!!passwordResetToken?.tokenExpiry && now < passwordResetToken.tokenExpiry.getTime()) {
+      isTokenValid = true;
+    }
+
+    if (!isTokenValid) {
+      return {
+        error: true,
+        message: "Your token is invalid or has expired",
+        tokenInvalid: true
+      }
+    }
+
+    const hashedPassword = await hash(password, 10);
+
+    await db.update(usersTable).set({
+      password: hashedPassword
+    }).where(eq(usersTable.id, passwordResetToken.userId!))
+
+    await db.delete(passwordResetTokensTable).where(eq(passwordResetTokensTable.id, passwordResetToken.id))
   }
 }

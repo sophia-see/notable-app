@@ -63,7 +63,7 @@ export default function RegisterForm() {
             </FormItem>
           )}
         />
-        <Button className='w-full'>Login</Button>
+        <Button className='w-full'>Sign up</Button>
         <div className='flex flex-col items-center gap-4'>
           <Separator />
           <span className='mt-2 text-neutral-600 text-preset-5'>Or log in with:</span>

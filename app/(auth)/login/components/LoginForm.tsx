@@ -72,6 +72,10 @@ export default function LoginForm() {
           <Separator />
         </div>
         <div className='text-center text-neutral-600  text-preset-5'>
+          Forgot your password?{" "}
+          <Link href={"/reset-password"} className='text-neutral-950 hover:underline'>Reset password</Link>
+        </div>
+        <div className='text-center text-neutral-600  text-preset-5'>
           No account yet?{" "}
           <Link href={"/register"} className='text-neutral-950 hover:underline'>Sign up</Link>
         </div>

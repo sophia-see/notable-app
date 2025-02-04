@@ -16,8 +16,8 @@ interface ResetPasswordPageProps {
 export default async function ResetPasswordPage({searchParams}: ResetPasswordPageProps) {
   const searchParamsValue = await searchParams;
   const { token } = searchParamsValue;
-  let isTokenValid = false
-
+  let isTokenValid = false;
+  
   if (token) {
     const [passwordResetToken] = await db.select().from(passwordResetTokensTable).where(eq(passwordResetTokensTable.token, token));
 

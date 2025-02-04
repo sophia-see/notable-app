@@ -11,6 +11,7 @@ import { passwordMatchSchema } from '@/validation/passwordMatchSchema'
 import { updatePassword } from '@/auth-actions'
 import { useToast } from '@/hooks/use-toast'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
 const formSchema = passwordMatchSchema
 
@@ -49,13 +50,13 @@ export default function ResetPasswordForm({token}: ResetPasswordFormProps) {
         title: "Password Reset",
         description: (
           <div className=''>
-            Your password has been updated. Click here to{" "}<Link href={"/login"} className='underline'>login</Link>
+            Your password has been updated. You can now login with your new password.
           </div>
         ),
         duration: Infinity
       })
-
       form.reset();
+      redirect("/login")
     }
   }
 
@@ -88,7 +89,12 @@ export default function ResetPasswordForm({token}: ResetPasswordFormProps) {
             </FormItem>
           )}
         />
-        <Button className='w-full'>Reset Password</Button>
+        {!!form.formState.errors.root?.message && (
+          <FormMessage>
+            {form.formState.errors.root.message}
+          </FormMessage>
+        )}
+        <Button type='submit' className='w-full'>Reset Password</Button>
       </form>
     </Form>
   )

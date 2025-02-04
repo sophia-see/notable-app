@@ -1,6 +1,6 @@
 "use client"
 
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/custom-ui/auth-form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/custom-ui/auth-form'
 import { Button } from '@/components/custom-ui/auth-button'
 import { Input } from '@/components/ui/input'
 import { passwordSchema } from '@/validation/passwordSchema'

@@ -10,7 +10,6 @@ import { z } from 'zod'
 import { passwordMatchSchema } from '@/validation/passwordMatchSchema'
 import { updatePassword } from '@/auth-actions'
 import { useToast } from '@/hooks/use-toast'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 const formSchema = passwordMatchSchema

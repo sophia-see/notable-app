@@ -1,12 +1,17 @@
 import type { Config } from "tailwindcss";
 
 export default {
-    darkMode: ["class"],
-    content: [
+	darkMode: ["class"],
+	content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+	safelist: [
+		{
+			pattern: /font-(sans|serif|mono)/
+		}
+	],
   theme: {
   	extend: {
   		borderRadius: {
@@ -110,6 +115,11 @@ export default {
 					lineHeight: "120%",
 					letterSpacing: "-0.2px"
 				}],
+			},
+			fontFamily: {
+				sans: ["Inter", "sans-serif"],
+				serif: ["Noto Serif", "serif"],
+				mono: ["Source Code Pro", "monospace"],
 			}
   	}
   },

@@ -45,68 +45,70 @@ export default function RegisterForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email Address</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder='email@example.com' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" {...field} />
-              </FormControl>
-              <FormDescription className='flex items-center gap-2'>
-                <CiCircleInfo />
-                At least 8 characters
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="passwordConfirm"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <Input type="password" {...field} />
-              </FormControl>
-              <FormDescription className='flex items-center gap-2'>
-                <CiCircleInfo />
-                Passwords must match
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type='submit' className='w-full'>Sign up</Button>
-        <div className='flex flex-col items-center gap-4'>
-          <Separator />
-          <span className='mt-2 text-neutral-600 text-preset-5'>Or log in with:</span>
-          <Button variant={"outline"} className='w-full'>
-            <FaGoogle />
-            Google
-          </Button>
-          <Separator />
-        </div>
-        <div className='text-center text-neutral-600  text-preset-5'>
-          Already have an account?{" "}
-          <Link href={"/login"} className='text-neutral-950 hover:underline'>Login</Link>
-        </div>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <fieldset disabled={form.formState.isSubmitting} className='space-y-4'>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email Address</FormLabel>
+                <FormControl>
+                  <Input type="email" placeholder='email@example.com' {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type="password" {...field} />
+                </FormControl>
+                <FormDescription className='flex items-center gap-2'>
+                  <CiCircleInfo />
+                  At least 8 characters
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="passwordConfirm"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input type="password" {...field} />
+                </FormControl>
+                <FormDescription className='flex items-center gap-2'>
+                  <CiCircleInfo />
+                  Passwords must match
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type='submit' className='w-full'>Sign up</Button>
+          <div className='flex flex-col items-center gap-4'>
+            <Separator />
+            <span className='mt-2 text-neutral-600 text-preset-5'>Or log in with:</span>
+            <Button variant={"outline"} className='w-full'>
+              <FaGoogle />
+              Google
+            </Button>
+            <Separator />
+          </div>
+          <div className='text-center text-neutral-600  text-preset-5'>
+            Already have an account?{" "}
+            <Link href={"/login"} className='text-neutral-950 hover:underline'>Login</Link>
+          </div>
+        </fieldset>
       </form>
     </Form>
   )

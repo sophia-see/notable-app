@@ -1,3 +1,8 @@
+@import '@fontsource/inter/index.css';
+@import '@fontsource/noto-serif/index.css';
+@import '@fontsource/source-code-pro/index.css';
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

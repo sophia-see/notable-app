@@ -4,7 +4,7 @@ import { CiSettings } from "react-icons/ci";
 
 export default function Navbar() {
     return (
-        <nav className="w-full py-[18.5px] lg:py-[23px] px-8 border-b-[1px] flex justify-between items-center bg-neutral-100 lg:bg-transparent">
+        <nav className="w-full py-[18.5px] lg:py-[23px] px-8 lg:border-b-[1px] flex justify-between items-center bg-neutral-100 lg:bg-transparent">
             <Image
                 src={"./assets/images/logo.svg"}
                 width={0}

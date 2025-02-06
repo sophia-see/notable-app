@@ -37,7 +37,7 @@ export default function BottomNav() {
     const pathname = usePathname();
     
     return (
-        <div className='lg:hidden h-[74px] shadow-[0_-4px_6px_rgba(240,240,240,0.6)] flex justify-between py-3 px-[32px]'>
+        <div className='bg-neutral-0 lg:hidden h-[74px] shadow-[0_-4px_6px_rgba(240,240,240,0.6)] flex justify-between py-3 px-[32px]'>
             <NavLink 
                 name='Home'
                 path='/home'

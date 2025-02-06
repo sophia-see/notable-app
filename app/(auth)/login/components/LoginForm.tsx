@@ -38,7 +38,7 @@ export default function LoginForm() {
       })
     } else {
       form.reset();
-      redirect("/all")
+      redirect("/home")
     }
   }
 

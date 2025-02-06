@@ -8,7 +8,7 @@ export default function RegisterPage() {
     <Card>
       <CardHeader>
         <Image
-          src={"./assets/images/logo.svg"}
+          src={"/assets/images/logo.svg"}
           width={0}
           height={0}
           sizes='100vw'

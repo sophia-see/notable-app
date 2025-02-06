@@ -9,14 +9,18 @@ export default function Sidebar() {
     return (
         <aside className="hidden lg:block w-[272px] h-screen overflow-auto text-neutral-700 py-3 px-4 scrollbar-hide border-r-[1px] border-neutral-200">
             <div className='flex flex-col gap-4'>
-                <Image
-                    src={"./assets/images/logo.svg"}
-                    width={0}
-                    height={0}
-                    sizes='100vw'
-                    className='w-[95px] h-auto'
-                    alt='notable logo'
-                />
+                <div className='w-[95px] h-[28px]'>
+                    <Image
+                        src={"/assets/images/logo.svg"}
+                        width={0}
+                        height={0}
+                        sizes='100vw'
+                        className='w-full h-full'
+                        alt='notable logo'
+                        priority
+                    />                    
+                </div>
+
                 <div className='flex flex-col gap-2'>
                     {/* main selection */}
                     <div className='flex flex-col gap-1'>

@@ -20,6 +20,7 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+			"neutral-1000": "#000000",
 			"neutral-950": "#0E121B",
 			"neutral-900": "#191B25",
 			"neutral-800": "#232530",
@@ -44,6 +45,7 @@ export default {
 			"red-100": "#FFD5D8",
 
   			background: 'hsl(var(--background))',
+  			"background-2": 'hsl(var(--background-2))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
   				DEFAULT: 'hsl(var(--card))',

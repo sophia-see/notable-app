@@ -1,4 +1,6 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from "react";
+"use client"
+
+import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from "react";
 
 export enum FONT {
   sans = "sans",
@@ -6,9 +8,18 @@ export enum FONT {
   mono = "mono"
 }
 
+export enum COLOR {
+  light = "light",
+  dark = "dark",
+  system = "system"
+}
+
 interface AppContextProps {
   font: FONT;
   setFont: Dispatch<SetStateAction<FONT>>;
+  color: COLOR;
+  setColor: Dispatch<SetStateAction<COLOR>>;
+  isDarkMode: boolean;
 }
 
 const AppContext = createContext<AppContextProps | null>(null);
@@ -18,10 +29,25 @@ interface AppProviderProps {
 }
 
 export const AppProvider = ({children}: AppProviderProps) => {
-  const [font, setFont] = useState<FONT>(FONT.sans);
+  const [font, setFont] = useState<FONT>(localStorage.getItem("font") as FONT || FONT.sans);
+  const [color, setColor] = useState<COLOR>(localStorage.getItem("color") as COLOR || COLOR.light);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  
+  useEffect(() => {
+    localStorage.setItem("font", font);
+  }, [font]);
+
+  useEffect(() => {
+    const isSystem = color == COLOR.system;
+    const isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = isSystem ? isSystemDark : color == COLOR.dark;
+    console.log({isSystem, isSystemDark, isDark, color})
+    setIsDarkMode(isDark);
+    localStorage.setItem("color", color);
+  }, [color]);
 
   return (
-    <AppContext.Provider value={{font, setFont}}>
+    <AppContext.Provider value={{font, setFont, color, setColor, isDarkMode}}>
       {children}
     </AppContext.Provider>
   )

@@ -1,7 +1,7 @@
 import React from 'react'
 import NotePage from './components/NotePage';
 import NotesList from './components/NotesList';
-import { notesByUser } from '@/server-actions/notes';
+import { notesByUser, tagsByUser } from '@/server-actions/notes';
 import CreateNoteButton from './components/CreateNoteButton';
 
 interface HomePageProps {
@@ -15,6 +15,7 @@ export default async function HomePage({searchParams}: HomePageProps) {
     const { noteId } = searchParamsValue;
 
     const userNotes = await notesByUser();
+    const userTags = (await tagsByUser());
 
     const note = noteId ? userNotes.find(i => i.id == parseInt(noteId)) : null;
 
@@ -27,7 +28,7 @@ export default async function HomePage({searchParams}: HomePageProps) {
 
             {!!noteId && (
                 <div className='flex-1'>
-                    <NotePage note={note} />
+                    <NotePage note={note} tags={userTags}/>
                 </div>
             )}
 

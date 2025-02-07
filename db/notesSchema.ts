@@ -9,5 +9,6 @@ export const notesTable = pgTable("notes", {
   title: varchar("title", { length: 100 }).notNull(),
   content: text("content"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
   isArchived: boolean("is_archived").default(false).notNull(),
 });

@@ -1,12 +1,43 @@
 "use server";
 
+import { Option } from "@/app/(protected-routes)/home/components/TagsSelect";
 import { auth } from "@/auth";
 import db from "@/db/drizzle";
 import { notesTable, noteTagsTable, tagsTable, usersTable } from "@/db/schema";
 import { notesValidateSchema } from "@/validation/notesValidateSchema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
+export const tagsByUser = async () => {
+    const session = await auth();
 
+    if (!session?.user?.id) throw new Error("No user logged in");
+
+    const userId = session?.user?.id;
+
+    const tags = await db
+        .select({
+            tagId: tagsTable.id,
+            tagName: tagsTable.name
+        })
+        .from(tagsTable)
+        .leftJoin(noteTagsTable, eq(tagsTable.id, noteTagsTable.tagId))
+        .leftJoin(notesTable, eq(noteTagsTable.noteId, notesTable.id))
+        .where(eq(notesTable.userId, parseInt(userId)))
+
+        
+    const uniqueTags = Array.from(new Set(tags.map((tag) => tag.tagName)))
+        .map((tagName) => ({
+            tagName,
+        })
+    );
+
+    const formatAsOptions = uniqueTags.map(i => ({
+        label: i.tagName,
+        value: i.tagName
+    }))
+
+    return formatAsOptions as Option[] ?? [];
+}
 
 export const notesByUser = async () => {
     const session = await auth();
@@ -107,6 +138,7 @@ export const createNote = async ({
         if (!newNote.id) throw new Error("Failed to create note");
 
         const noteId = newNote.id;
+        const userId = user.id;
 
         if (tags.length > 0) {
             const tagIds = await Promise.all(
@@ -114,13 +146,14 @@ export const createNote = async ({
                     let [tag] = await db
                         .select()
                         .from(tagsTable)
-                        .where(eq(tagsTable.name, tagName));
+                        .where(and(eq(tagsTable.name, tagName), (eq(tagsTable.userId, userId))));
 
                     if (!tag) {
                         [tag] = await db
                             .insert(tagsTable)
                             .values({
                                 name: tagName,
+                                userId
                             })
                             .returning();
                     }

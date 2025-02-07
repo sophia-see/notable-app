@@ -15,8 +15,9 @@ export default async function HomePage({searchParams}: HomePageProps) {
     const { noteId } = searchParamsValue;
 
     const userNotes = await notesByUser();
-    console.log({noteId, userNotes})
-    
+
+    const note = noteId ? userNotes.find(i => i.id == parseInt(noteId)) : null;
+
     return (
         <div className='text-foreground flex h-full'>
             <div className={`${!!noteId ? "hidden" : "flex flex-col gap-4"} w-full lg:flex lg:flex-col lg:gap-4 lg:w-[290px] lg:border-r-[1px]`}>
@@ -26,7 +27,7 @@ export default async function HomePage({searchParams}: HomePageProps) {
 
             {!!noteId && (
                 <div className='flex-1'>
-                    <NotePage id={noteId} />
+                    <NotePage note={note} />
                 </div>
             )}
 

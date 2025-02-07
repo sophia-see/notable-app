@@ -29,9 +29,20 @@ interface AppProviderProps {
 }
 
 export const AppProvider = ({children}: AppProviderProps) => {
-  const [font, setFont] = useState<FONT>(localStorage.getItem("font") as FONT || FONT.sans);
-  const [color, setColor] = useState<COLOR>(localStorage.getItem("color") as COLOR || COLOR.light);
+  const [font, setFont] = useState<FONT>(FONT.sans);
+  const [color, setColor] = useState<COLOR>(COLOR.light);
   const [isDarkMode, setIsDarkMode] = useState(true);
+
+  useEffect(() => {
+    const storedFont = localStorage.getItem("font") as FONT;
+    const storedColor = localStorage.getItem("color") as COLOR;
+
+    if (storedFont)
+      setFont(storedFont)
+
+    if (storedColor)
+      setColor(storedColor)
+  }, [])
   
   useEffect(() => {
     localStorage.setItem("font", font);
@@ -43,6 +54,7 @@ export const AppProvider = ({children}: AppProviderProps) => {
     const isDark = isSystem ? isSystemDark : color == COLOR.dark;
     console.log({isSystem, isSystemDark, isDark, color})
     setIsDarkMode(isDark);
+    
     localStorage.setItem("color", color);
   }, [color]);
 

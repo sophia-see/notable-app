@@ -5,7 +5,7 @@ import db from "@/db/drizzle";
 import { usersTable } from "@/db/usersSchema";
 import { passwordMatchSchema } from "@/validation/passwordMatchSchema";
 import { passwordSchema } from "@/validation/passwordSchema";
-import { hash } from "bcryptjs";
+import { compare, hash } from "bcryptjs";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { randomBytes } from "crypto";
@@ -93,7 +93,7 @@ export const loginUser = async ({email, password}: LoginUserProps) => {
 export const resetPassword = async (emailAddress: string) => {
   const session = await auth();
 
-  if (!session?.user?.email)
+  if (session?.user?.email)
     return {
       error: true,
       message: "You are already logged in"
@@ -194,4 +194,49 @@ export const loginWithGoogle = async () => {
 
 export const logout = async () => {
   await signOut();
+}
+
+interface ChangePasswordProps {
+  oldPassword: string;
+  password: string;
+  passwordConfirm: string;
+}
+
+export const changePassword = async ({oldPassword, password, passwordConfirm}: ChangePasswordProps) => {
+  const passwordValidation = passwordMatchSchema.safeParse({
+    password,
+    passwordConfirm
+  });
+
+  if (!passwordValidation.success) {
+    return {
+      error: true,
+      message: passwordValidation.error.issues[0]?.message ?? "An error occurred."
+    }
+  }
+
+  const session = await auth();
+
+  if (!session?.user?.email) {
+    return {
+      error: true,
+      message: "You should be logged in to change your password."
+    }
+  }
+
+  const [user] = await db.select().from(usersTable).where(eq(usersTable.email, session.user.email as string));
+
+  const isPasswordCorrect = await compare(oldPassword, user.password as string);
+
+  if (!isPasswordCorrect)
+    return {
+      error: true,
+      message: "Incorrect old password"
+    }
+  
+  const hashedPassword = await hash(password, 10);
+
+  await db.update(usersTable).set({
+    password: hashedPassword
+  }).where(eq(usersTable.id, user.id!))
 }

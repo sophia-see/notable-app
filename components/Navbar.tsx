@@ -32,7 +32,7 @@ export default function Navbar() {
                 py-[18.5px] lg:py-[23px] px-8 
                 lg:border-b-[1px] 
                 flex justify-between items-center 
-                ${isDarkMode ? "bg-neutral-800" : "bg-neutral-100"} lg:bg-transparent
+                ${isDarkMode ? "bg-neutral-800 lg:bg-neutral-950" : "bg-neutral-100 lg:bg-neutral-0"} lg:bg-transparent
             `}
         >
             {renderLogo}

@@ -31,7 +31,7 @@ interface AppProviderProps {
 export const AppProvider = ({children}: AppProviderProps) => {
   const [font, setFont] = useState<FONT>(FONT.sans);
   const [color, setColor] = useState<COLOR>(COLOR.light);
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const storedFont = localStorage.getItem("font") as FONT;

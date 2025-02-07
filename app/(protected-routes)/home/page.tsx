@@ -34,7 +34,7 @@ export default async function HomePage({searchParams}: HomePageProps) {
                 note settings
             </div>
 
-            <div className='absolute right-0 bottom-0 mr-4 mb-4'>
+            <div className={`${!!noteId ? "hidden" : ""} absolute right-0 bottom-0 mr-4 mb-4`}>
                 <CreateNoteButton />
             </div>
         </div>

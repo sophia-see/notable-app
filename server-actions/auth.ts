@@ -11,7 +11,6 @@ import { eq } from "drizzle-orm";
 import { randomBytes } from "crypto";
 import { passwordResetTokensTable } from "@/db/passwordResetTokensSchema";
 import { mailer } from "@/lib/email";
-import { redirect } from "next/dist/server/api-utils";
 
 interface RegisterUserProps {
   email: string;

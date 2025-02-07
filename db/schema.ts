@@ -1,2 +1,5 @@
 export { usersTable } from "./usersSchema"
 export { passwordResetTokensTable } from "./passwordResetTokensSchema"
+export { notesTable } from "./notesSchema"
+export { tagsTable } from "./tagsSchema"
+export { noteTagsTable } from "./noteTagsSchema"

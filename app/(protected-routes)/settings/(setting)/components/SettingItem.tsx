@@ -13,6 +13,8 @@ export default function Item<T> ({name, description, icon, selected, setSelected
   const { isDarkMode } = useAppContext();
   const isActive = value == selected;
 
+  console.log({value, selected, isActive})
+
   const onClickItem = () => {
     setSelected(value)
   }
@@ -23,7 +25,7 @@ export default function Item<T> ({name, description, icon, selected, setSelected
         flex justify-between items-center gap-4 
         p-4 
         rounded-[12px] 
-        border-[1px] ${isDarkMode ? "border-neutral-700" : "border-neutral-200"}
+        border-[1px] border-border
         ${isActive ? isDarkMode ? "bg-neutral-800" : "bg-neutral-100" : ""}
       `}
       onClick={onClickItem}
@@ -34,7 +36,7 @@ export default function Item<T> ({name, description, icon, selected, setSelected
           className={`
             p-2 
             border-[1px] 
-            ${isDarkMode ? "border-neutral-700 bg-neutral-950" : "border-neutral-200 bg-neutral-0"} 
+            border-border bg-background-2
             ${isDarkMode ? "text-neutral-0" : "text-neutral-950 "}
             rounded-[12px] 
           `}>

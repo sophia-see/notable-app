@@ -13,6 +13,42 @@ interface CreateNotesProps {
     tags: string[];
 }
 
+export const notesByUser = async () => {
+    const session = await auth();
+
+    if (!session?.user?.id)
+        throw new Error ("No user logged in");
+
+    const notesWithTags = await db
+        .select({
+            id: notesTable.id,
+            title: notesTable.title,
+            content: notesTable.content,
+            createdAt: notesTable.createdAt,
+            tags: tagsTable.name,
+        })
+        .from(notesTable)
+        .leftJoin(noteTagsTable, eq(notesTable.id, noteTagsTable.noteId))
+        .leftJoin(tagsTable, eq(noteTagsTable.tagId, tagsTable.id))
+        .where(eq(notesTable.userId, parseInt(session.user.id)));
+
+    const notesMap = new Map();
+
+    notesWithTags.forEach((row) => {
+        if (!notesMap.has(row.id)) {
+            notesMap.set(row.id, {
+                ...row,
+                tags: []
+            })
+        }
+
+        if (row.tags)
+            notesMap.get(row.id).tags.push(row.tags);
+    })
+
+    return Array.from(notesMap.values());
+}
+
 export const createNotes = async ({title, content, tags}: CreateNotesProps) => {
     const notesSchema = z.object({
         title: z.string().min(1, "Title must have at least 1 character").max(100, "Title can only have at most 100 characters")

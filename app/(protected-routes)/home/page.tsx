@@ -1,5 +1,8 @@
 import React from 'react'
 import NotePage from './components/NotePage';
+import NotesList from './components/NotesList';
+import { notesByUser } from '@/server-actions/notes';
+import CreateNoteButton from './components/CreateNoteButton';
 
 interface HomePageProps {
     searchParams: Promise<{
@@ -11,12 +14,14 @@ export default async function HomePage({searchParams}: HomePageProps) {
     const searchParamsValue = await searchParams;
     const { noteId } = searchParamsValue;
 
-    console.log({noteId})
+    const userNotes = await notesByUser();
+    console.log({noteId, userNotes})
     
     return (
-        <div className='text-foreground flex'>
-            <div className='hidden lg:flex w-[290px] border-r-[1px]'>
-                sidebar
+        <div className='text-foreground flex h-full'>
+            <div className={`${!!noteId ? "hidden" : "flex flex-col gap-4"} w-full lg:flex lg:flex-col lg:gap-4 lg:w-[290px] lg:border-r-[1px]`}>
+                <span className='text-preset-1 text-foreground'>All Notes</span>
+                <NotesList notes={userNotes} />
             </div>
 
             {!!noteId && (
@@ -27,6 +32,10 @@ export default async function HomePage({searchParams}: HomePageProps) {
 
             <div className='hidden lg:flex w-[290px]'>
                 note settings
+            </div>
+
+            <div className='absolute right-0 bottom-0 mr-4 mb-4'>
+                <CreateNoteButton />
             </div>
         </div>
     )

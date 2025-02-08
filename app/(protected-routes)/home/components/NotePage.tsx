@@ -103,7 +103,7 @@ export default function NotePage({ note, tags }: NotePageProps) {
                                         <Input 
                                             type="text" 
                                             placeholder="Enter a title..." 
-                                            className="text-preset-2 "
+                                            className="text-preset-2 px-0"
                                             {...field} 
                                         />
                                     </FormControl>
@@ -112,9 +112,9 @@ export default function NotePage({ note, tags }: NotePageProps) {
                             )}
                         />
 
-                        <div className="flex flex-col gap-1 py-2">
-                            <div className="flex items-start">
-                                <div className="min-w-[115px] flex items-center gap-[6px] py-4">
+                        <div className="flex flex-col gap-1">
+                            <div className="flex items-center">
+                                <div className="min-w-[115px] flex items-center gap-[6px]">
                                     <PiTag />
                                     <span className="text-preset-6 text-neutral-700">Tags</span>
                                 </div>
@@ -122,7 +122,7 @@ export default function NotePage({ note, tags }: NotePageProps) {
                                     <TagsSelect tags={tags} initialSelected={note?.tags ?? []}/>
                                 </div>
                             </div>
-                            <div className="flex items-start">
+                            <div className="flex items-center">
                                 <div className="min-w-[115px] flex items-center gap-[6px] py-4">
                                     <GoClock />
                                     <span className="text-preset-6 text-neutral-700">Last edited</span>
@@ -147,7 +147,7 @@ export default function NotePage({ note, tags }: NotePageProps) {
                             render={({ field }) => (
                                 <FormItem className="flex-1">
                                     <FormControl>
-                                        <Textarea placeholder="Start typing your note here…" className="h-full" {...field} />
+                                        <Textarea placeholder="Start typing your note here…" className="h-full px-0" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

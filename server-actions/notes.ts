@@ -71,7 +71,7 @@ export const notesByUser = async () => {
         if (row.tags) notesMap.get(row.id).tags.push(row.tags);
     });
 
-    return Array.from(notesMap.values());
+    return Array.from(notesMap.values()).reverse();
 };
 
 interface CreateNotesProps {

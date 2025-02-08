@@ -60,7 +60,7 @@ export default function TagsSelect({tags, initialSelected}:TagsSelectProps) {
   return (
     <div className="relative w-full">
       <div
-        className="border rounded-[4px] p-2 cursor-pointer flex gap-x-2"
+        className="border-b-[1px] rounded-[4px] px-2 py-1 cursor-pointer flex gap-x-2"
         onClick={() => setIsOpen(!isOpen)}
       >
         {selectedOptions.length > 0
@@ -71,7 +71,7 @@ export default function TagsSelect({tags, initialSelected}:TagsSelectProps) {
               </span>
             ))
           )
-          : <span className="py-3 text-muted-foreground">Select tags</span>}
+          : <span className="py-3 text-muted-foreground text-preset-6">Select tags</span>}
       </div>
       {isOpen && (
         <div ref={dropdownRef} className="absolute mt-2 w-full bg-white border p-2 shadow-md max-h-[220px] overflow-auto">

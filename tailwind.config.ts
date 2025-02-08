@@ -88,32 +88,32 @@ export default {
   		},
 			fontSize: {
 				"preset-1": ["24px", {
-					fontWeight: "bold",
+					fontWeight: 700,
 					lineHeight: "120%",
 					letterSpacing: "-0.5px"
 				}],
 				"preset-2": ["20px", {
-					fontWeight: "bold",
+					fontWeight: 700,
 					lineHeight: "120%",
 					letterSpacing: "-0.5px"
 				}],
 				"preset-3": ["16px", {
-					fontWeight: "semibold",
+					fontWeight: 600,
 					lineHeight: "120%",
 					letterSpacing: "-0.3px"
 				}],
 				"preset-4": ["14px", {
-					fontWeight: "medium",
+					fontWeight: 500,
 					lineHeight: "120%",
 					letterSpacing: "-0.2px"
 				}],
 				"preset-5": ["14px", {
-					fontWeight: "regular",
+					fontWeight: 400,
 					lineHeight: "120%",
 					letterSpacing: "-0.2px"
 				}],
 				"preset-6": ["12px", {
-					fontWeight: "regular",
+					fontWeight: 400,
 					lineHeight: "120%",
 					letterSpacing: "-0.2px"
 				}],

@@ -60,7 +60,7 @@ export default function TagsSelect({tags, initialSelected}:TagsSelectProps) {
   return (
     <div className="relative w-full">
       <div
-        className="border-b-[1px] rounded-[4px] px-2 py-1 cursor-pointer flex gap-x-2"
+        className="border-b-[1px] rounded-[4px] py-2 cursor-pointer flex gap-x-2"
         onClick={() => setIsOpen(!isOpen)}
       >
         {selectedOptions.length > 0

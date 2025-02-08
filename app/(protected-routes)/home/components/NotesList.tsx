@@ -2,6 +2,7 @@
 
 import { Separator } from '@/components/ui/separator';
 import { NoteType } from '@/db/types';
+import { formatDate } from '@/lib/utils';
 import { redirect, usePathname, useSearchParams } from 'next/navigation';
 import React from 'react'
 
@@ -24,21 +25,28 @@ export default function NotesList({notes}: NotesListProps) {
     return (
         <div className='flex flex-col gap-1'>
             {
-                notes.map((note) => {
+                notes.map((note, index) => {
+                    const isLast = index == notes.length-1;
+
                     return (
-                        <div className='flex flex-col gap-1' key={note.id.toString()} onClick={() => onClickNote(note.id.toString())}>
-                            <div className='flex flex-col gap-3'>
-                                <span>{note.title}</span>
-                                <span>{note.tags.length ? note.tags.map(tag => tag).join(", ") : "-"}</span>
-                                <span>
-                                    {note.createdAt.toLocaleDateString("en-GB", {
-                                        day: "2-digit",
-                                        month: "short",
-                                        year: "numeric",
-                                    })}
+                        <div className='flex flex-col gap-1 cursor-pointer' key={note.id.toString()} onClick={() => onClickNote(note.id.toString())}>
+                            <div className='flex flex-col gap-3 p-2'>
+                                <span className='text-preset-3 text-neutral-950'>{note.title}</span>
+                                    {note.tags.length 
+                                        ? (
+                                            <div className='flex gap-1'>
+                                                {note.tags.map((tag, index) => (
+                                                    <div key={`${index}`} className='text-neutral-950 text-preset-6 p-1 bg-neutral-200 rounded-[4px]'>{tag}</div>
+                                                ))}
+                                            </div>
+                                        )
+                                        : <></>
+                                    }
+                                <span className='text-preset-6 text-neutral-700'>
+                                    {formatDate(note.createdAt)}
                                 </span>
                             </div>
-                            <Separator />
+                            {!isLast && <Separator />}
                         </div>
                     )
                 })

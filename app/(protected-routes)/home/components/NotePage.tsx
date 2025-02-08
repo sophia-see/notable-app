@@ -18,6 +18,8 @@ import { PiTag } from "react-icons/pi";
 import { z } from "zod";
 import TagsSelect, { Option } from "./TagsSelect";
 import { GoClock } from "react-icons/go";
+import { formatDate } from "@/lib/utils";
+import { useEffect } from "react";
 
 interface NotePageProps {
     note: NoteType | null;
@@ -40,6 +42,13 @@ export default function NotePage({ note, tags }: NotePageProps) {
             tags: note?.tags ?? []
         },
     });
+
+    useEffect(() => {
+        form.setValue("title", note?.title ?? "")
+        form.setValue("content", note?.content ?? "")
+        form.setValue("isArchived", note?.isArchived ?? false)
+        form.setValue("tags", note?.tags ?? [])
+    }, [note])
 
     const onGoBack = () => {
         redirect("/home")
@@ -129,11 +138,7 @@ export default function NotePage({ note, tags }: NotePageProps) {
                                 </div>
                                 <div className="flex-1">
                                     <span className="text-preset-6 text-neutral-700">
-                                    {note?.updatedAt?.toLocaleDateString("en-GB", {
-                                        day: "2-digit",
-                                        month: "short",
-                                        year: "numeric",
-                                    })}
+                                    {note?.updatedAt ? formatDate(note?.updatedAt) : "N/A"}
                                     </span>
                                 </div>
                             </div>

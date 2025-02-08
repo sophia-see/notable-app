@@ -49,6 +49,7 @@ export default function BottomNav() {
     return (
         <div 
             className={`
+                z-10
                 ${isDarkMode ? "bg-neutral-950" : "bg-neutral-0"} 
                 lg:hidden h-[74px] 
                 ${isDarkMode ? "shadow-[0_-5px_6px_rgba(0,0,0,0.5)]" : "shadow-[0_-4px_6px_rgba(240,240,240,0.6)]"} 

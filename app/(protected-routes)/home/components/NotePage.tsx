@@ -8,15 +8,16 @@ import { Separator } from "@/components/ui/separator";
 import { useAppContext } from "@/contexts/AppContext";
 import { NoteType } from "@/db/types";
 import { useToast } from "@/hooks/use-toast";
-import { createNote } from "@/server-actions/notes";
+import { createNote, updateNote } from "@/server-actions/notes";
 import { notesValidateSchema } from "@/validation/notesValidateSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import { IoIosArrowBack } from "react-icons/io";
 import { PiTag } from "react-icons/pi";
 import { z } from "zod";
 import TagsSelect, { Option } from "./TagsSelect";
+import { GoClock } from "react-icons/go";
 
 interface NotePageProps {
     note: NoteType | null;
@@ -28,6 +29,7 @@ const formSchema = notesValidateSchema;
 export default function NotePage({ note, tags }: NotePageProps) {
     const { isDarkMode } = useAppContext();
     const { toast } = useToast();
+    const router = useRouter();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -51,7 +53,7 @@ export default function NotePage({ note, tags }: NotePageProps) {
         let response;
 
         if (note?.id) {
-
+            response = await updateNote({id: note?.id, title, content, tags: filteredTags, isArchived: isArchived ?? false});
         } else {
             response = await createNote({title, content, tags: filteredTags, isArchived: isArchived ?? false});
         }
@@ -68,6 +70,8 @@ export default function NotePage({ note, tags }: NotePageProps) {
                 title: note?.id ? "Update Note Saved" : "Create Note Saved",
             })
         }
+
+        router.refresh();
     }
 
 
@@ -77,7 +81,7 @@ export default function NotePage({ note, tags }: NotePageProps) {
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="flex flex-col h-full"
+                        className="flex flex-col gap-3 h-full"
                     >
                         <div className="flex justify-between items-center">
                             <div className="flex gap-1 items-center" onClick={onGoBack}>
@@ -85,13 +89,12 @@ export default function NotePage({ note, tags }: NotePageProps) {
                                 <span className={`text-preset-5 ${isDarkMode ? "text-neutral-300" : "text-neutral-600"}`}>Go Back</span>
                             </div>
                             <div className="flex items-center gap-4">
-                                <Button type="reset">Cancel</Button>
-                                <Button type="submit">Submit</Button>
+                                <Button variant={"ghost"} className="text-preset-5" type="reset">Cancel</Button>
+                                <Button variant={"ghost"} className="text-preset-5 text-primary" type="submit">Save Note</Button>
                             </div>
                         </div>
                         <Separator />
                         <FormField
-                            
                             control={form.control}
                             name="title"
                             render={({ field }) => (
@@ -113,10 +116,25 @@ export default function NotePage({ note, tags }: NotePageProps) {
                             <div className="flex items-start">
                                 <div className="min-w-[115px] flex items-center gap-[6px] py-4">
                                     <PiTag />
-                                    <span>Tags</span>
+                                    <span className="text-preset-6 text-neutral-700">Tags</span>
                                 </div>
                                 <div className="flex-1">
                                     <TagsSelect tags={tags} initialSelected={note?.tags ?? []}/>
+                                </div>
+                            </div>
+                            <div className="flex items-start">
+                                <div className="min-w-[115px] flex items-center gap-[6px] py-4">
+                                    <GoClock />
+                                    <span className="text-preset-6 text-neutral-700">Last edited</span>
+                                </div>
+                                <div className="flex-1">
+                                    <span className="text-preset-6 text-neutral-700">
+                                    {note?.updatedAt?.toLocaleDateString("en-GB", {
+                                        day: "2-digit",
+                                        month: "short",
+                                        year: "numeric",
+                                    })}
+                                    </span>
                                 </div>
                             </div>
                         </div>

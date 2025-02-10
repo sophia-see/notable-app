@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/custom-ui/custom-button'
 import { useAppContext } from '@/contexts/AppContext'
-import { redirect, useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import React from 'react'
 import { useFormContext } from 'react-hook-form';
 import { IoIosArrowBack } from 'react-icons/io'
@@ -10,7 +10,6 @@ import { IoIosArrowBack } from 'react-icons/io'
 export default function NotesHeader() {
   const form = useFormContext();
   const { isDarkMode } = useAppContext();
-  const router = useRouter();
   
   const onGoBack = () => {
       redirect("/home");

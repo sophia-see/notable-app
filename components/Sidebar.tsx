@@ -6,11 +6,8 @@ import { HiOutlineHome } from "react-icons/hi2";
 import { IoArchiveOutline } from "react-icons/io5";
 import { IoIosArrowForward } from "react-icons/io";
 import Link from 'next/link';
-import { useAppContext } from '@/contexts/AppContext';
 
 export default function Sidebar() {
-    const { isDarkMode } = useAppContext();
-
     return (
         <aside className={`hidden lg:block w-[272px] h-screen overflow-auto text-neutral-700 py-3 px-4 scrollbar-hide border-r-[1px] border-border bg-background-2`}>
             <div className='flex flex-col gap-4'>

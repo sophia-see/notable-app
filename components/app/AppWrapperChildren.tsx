@@ -1,6 +1,6 @@
 "use client"
 
-import { COLOR, useAppContext } from '@/contexts/AppContext';
+import { useAppContext } from '@/contexts/AppContext';
 import React from 'react'
 
 interface AppWrapperChildrenProps {

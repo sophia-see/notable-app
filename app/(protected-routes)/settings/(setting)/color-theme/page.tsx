@@ -1,8 +1,7 @@
 "use client"
 
 import { Button } from '@/components/custom-ui/custom-button';
-import { COLOR, FONT, useAppContext } from '@/contexts/AppContext'
-import { redirect } from 'next/navigation';
+import { COLOR,  useAppContext } from '@/contexts/AppContext'
 import React, { useState } from 'react'
 import Item from '../components/SettingItem';
 import { IoSunnyOutline } from 'react-icons/io5';

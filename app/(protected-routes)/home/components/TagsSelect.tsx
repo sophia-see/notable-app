@@ -39,7 +39,7 @@ export default function TagsSelect({tags, initialSelected}:TagsSelectProps) {
 
   useEffect(() => {
     formContext.setValue("tags", selectedOptions);
-  }, [selectedOptions]);
+  }, [selectedOptions, formContext]);
 
   const toggleOption = (value: string) => {
     setSelectedOptions((prev) =>

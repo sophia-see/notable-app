@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/custom-ui/custom-button';
 import { FONT, useAppContext } from '@/contexts/AppContext'
-import { redirect } from 'next/navigation';
 import React, { useState } from 'react'
 import Item from '../components/SettingItem';
 

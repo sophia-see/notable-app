@@ -11,15 +11,12 @@ import { notesValidateSchema } from "@/validation/notesValidateSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
-import { PiTag } from "react-icons/pi";
 import { z } from "zod";
-import TagsSelect, { Option } from "./TagsSelect";
-import { GoClock } from "react-icons/go";
-import { formatDate } from "@/lib/utils";
-import { useEffect } from "react";
+import { Option } from "./TagsSelect";
 import NotesHeader from "./NotesHeader";
 import NoteDetails from "./NoteDetails";
 import { Button } from "@/components/custom-ui/custom-button";
+import { useEffect } from "react";
 
 interface NotePageProps {
     note: NoteType | null;
@@ -49,7 +46,7 @@ export default function NotePage({ note, tags }: NotePageProps) {
             isArchived: note?.isArchived ?? false,
             tags: note?.tags ?? [],
         })
-    }, [note])
+    }, [note, form])
 
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
         const { title, content, tags, isArchived } = data;

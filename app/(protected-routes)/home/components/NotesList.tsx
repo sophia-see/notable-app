@@ -1,6 +1,5 @@
 "use client"
 
-import { Separator } from '@/components/ui/separator';
 import { NoteType } from '@/db/types';
 import { formatDate } from '@/lib/utils';
 import { redirect, usePathname, useSearchParams } from 'next/navigation';

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { HiOutlineHome } from "react-icons/hi2";
 import { IoArchiveOutline } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";

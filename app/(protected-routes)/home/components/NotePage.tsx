@@ -16,7 +16,7 @@ import { Option } from "./TagsSelect";
 import NotesHeader from "./NotesHeader";
 import NoteDetails from "./NoteDetails";
 import { Button } from "@/components/custom-ui/custom-button";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 interface NotePageProps {
     note: NoteType | null;
@@ -46,7 +46,11 @@ export default function NotePage({ note, tags }: NotePageProps) {
             isArchived: note?.isArchived ?? false,
             tags: note?.tags ?? [],
         })
-    }, [note, form])
+    }, [note, form]);
+
+    const renderTags = React.useMemo(() => {
+        return <NoteDetails tags={tags} note={note}/>
+    }, [note, tags])
 
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
         const { title, content, tags, isArchived } = data;
@@ -106,7 +110,7 @@ export default function NotePage({ note, tags }: NotePageProps) {
                             )}
                         />
 
-                        <NoteDetails tags={tags} note={note}/>
+                        {renderTags}
                         
                         <Separator />
 
@@ -122,7 +126,7 @@ export default function NotePage({ note, tags }: NotePageProps) {
                                 </FormItem>
                             )}
                         />
-                        <Separator />
+                        <Separator className="hidden lg:block"/>
                                 
                         <div className="hidden lg:flex lg:gap-4">
                             <Button type="submit">Save Note</Button>    

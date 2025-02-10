@@ -38,6 +38,10 @@ export default function TagsSelect({tags, initialSelected}:TagsSelectProps) {
   }, []);
 
   useEffect(() => {
+    setSelectedOptions(initialSelected ?? [])
+  }, [initialSelected,setSelectedOptions  ])
+
+  useEffect(() => {
     formContext.setValue("tags", selectedOptions);
   }, [selectedOptions, formContext]);
 

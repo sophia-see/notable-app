@@ -12,6 +12,7 @@ interface NotesListProps {
 
 export default function NotesList({notes}: NotesListProps) {
     const searchParams = useSearchParams();
+    const currNote = searchParams.get("noteId") ?? ""
     const pathname = usePathname();
     
     const onClickNote = (id: string) => {
@@ -23,13 +24,14 @@ export default function NotesList({notes}: NotesListProps) {
     }
 
     return (
-        <div className='flex flex-col gap-1'>
+        <div className='flex flex-col  lg:pl-8 lg:py-5 lg:pr-4'>
             {
                 notes.map((note, index) => {
                     const isLast = index == notes.length-1;
-
+                    const isSelected = currNote == note.id.toString();
+                    
                     return (
-                        <div className='flex flex-col gap-1 cursor-pointer' key={note.id.toString()} onClick={() => onClickNote(note.id.toString())}>
+                        <div className={`pt-1 rounded-[6px] flex flex-col gap-1 cursor-pointer ${isSelected ? "bg-background" : ""} ${!isLast ? "border-b-[1px] border-border" : ""}`} key={note.id.toString()} onClick={() => onClickNote(note.id.toString())}>
                             <div className='flex flex-col gap-3 p-2'>
                                 <span className='text-preset-3 text-neutral-950'>{note.title}</span>
                                     {note.tags.length 
@@ -46,7 +48,7 @@ export default function NotesList({notes}: NotesListProps) {
                                     {formatDate(note.createdAt)}
                                 </span>
                             </div>
-                            {!isLast && <Separator />}
+                            {/* {!isLast && <Separator />} */}
                         </div>
                     )
                 })

@@ -22,7 +22,7 @@ export default async function HomePage({searchParams}: HomePageProps) {
     return (
         <div className='text-foreground flex h-full'>
             <div className={`${!!noteId ? "hidden" : "flex flex-col gap-4"} w-full lg:flex lg:flex-col lg:gap-4 lg:w-[290px] lg:border-r-[1px]`}>
-                <span className='text-preset-1 text-foreground'>All Notes</span>
+                <span className='text-preset-1 text-foreground lg:hidden'>All Notes</span>
                 <NotesList notes={userNotes} />
             </div>
 

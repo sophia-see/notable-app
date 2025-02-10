@@ -3,6 +3,7 @@ import NotePage from './components/NotePage';
 import NotesList from './components/NotesList';
 import { notesByUser, tagsByUser } from '@/server-actions/notes';
 import CreateNoteButton from './components/CreateNoteButton';
+import NoteSettings from './components/NoteSettings';
 
 interface HomePageProps {
     searchParams: Promise<{
@@ -20,10 +21,15 @@ export default async function HomePage({searchParams}: HomePageProps) {
     const note = noteId ? userNotes.find(i => i.id == parseInt(noteId)) : null;
 
     return (
-        <div className='text-foreground flex h-full'>
+        <div className='text-foreground flex h-full lg:px-8'>
             <div className={`${!!noteId ? "hidden" : "flex flex-col gap-4"} w-full lg:flex lg:flex-col lg:gap-4 lg:w-[290px] lg:border-r-[1px]`}>
                 <span className='text-preset-1 text-foreground lg:hidden'>All Notes</span>
-                <NotesList notes={userNotes} />
+                <div className='flex flex-col gap-4 lg:py-5 lg:pr-4'>
+                    <div className='hidden lg:block'>
+                        <CreateNoteButton />
+                    </div>
+                    <NotesList notes={userNotes} />
+                </div>
             </div>
 
             {!!noteId && (
@@ -33,10 +39,10 @@ export default async function HomePage({searchParams}: HomePageProps) {
             )}
 
             {!!noteId && <div className='hidden lg:flex w-[290px]'>
-                note settings
+                <NoteSettings />
             </div>}
 
-            <div className={`${!!noteId ? "hidden" : ""} absolute right-0 bottom-0 mr-4 mb-4`}>
+            <div className={`${!!noteId ? "hidden" : ""} lg:hidden absolute right-0 bottom-0 mr-4 mb-4`}>
                 <CreateNoteButton />
             </div>
         </div>

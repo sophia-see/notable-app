@@ -18,8 +18,9 @@ export default function CreateNoteButton() {
     }
 
     return (
-        <Button onClick={onCreateNote} className='w-[48px] h-[48px] bg-blue-500 p-2 flex justify-center items-center rounded-full'>
-            <FaPlus color='white'/>
+        <Button onClick={onCreateNote} className='w-[48px] h-[48px] lg:w-full lg:h-auto bg-blue-500 p-2 lg:py-3 flex justify-center items-center rounded-full lg:rounded-[8px]'>
+            <FaPlus color='white' className='lg:hidden'/>
+            <span className='hidden lg:block text-preset-4'>+ Create New Note</span>
         </Button>
     )
 }

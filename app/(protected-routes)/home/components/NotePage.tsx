@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { createNote, updateNote } from "@/server-actions/notes";
 import { notesValidateSchema } from "@/validation/notesValidateSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Option } from "./TagsSelect";
@@ -28,7 +28,10 @@ const formSchema = notesValidateSchema;
 export default function NotePage({ note, tags }: NotePageProps) {
     const { toast } = useToast();
     const router = useRouter();
-
+    const searchParams = useSearchParams();
+    const noteId = searchParams.get("noteId") ?? "";
+    const isNewNote = noteId == "new"
+    
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -68,14 +71,23 @@ export default function NotePage({ note, tags }: NotePageProps) {
 
         if (response?.error) {
             toast({
-                title: note?.id ? "Update Note Error" : "Create Note Error",
+                title: isNewNote ? "Create Note Error" : "Update Note Error",
                 description: response?.message,
                 duration: Infinity
             })
         } else {
             toast({
-                title: note?.id ? "Update Note Saved" : "Create Note Saved",
+                title: isNewNote ? "Create Note Saved" : "Update Note Saved" ,
             })
+
+            console.log({id: response?.id})
+            if (isNewNote && !!response?.id) {
+                const params = new URLSearchParams(searchParams);
+
+                params.set("noteId", response?.id?.toString())
+
+                redirect(`/home?${params.toString()}`)
+            }
         }
 
         router.refresh();

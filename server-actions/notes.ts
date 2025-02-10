@@ -56,7 +56,7 @@ export const notesByUser = async () => {
         .from(notesTable)
         .leftJoin(noteTagsTable, eq(notesTable.id, noteTagsTable.noteId))
         .leftJoin(tagsTable, eq(noteTagsTable.tagId, tagsTable.id))
-        .where(eq(notesTable.userId, parseInt(session.user.id)));
+        .where(and(eq(notesTable.isArchived, false), eq(notesTable.userId, parseInt(session.user.id))));
 
     const notesMap = new Map();
 
@@ -165,7 +165,13 @@ export const createNote = async ({
 
             await db
                 .insert(noteTagsTable)
-                .values(tagIds.map((tagId) => ({ noteId, tagId })));
+                .values(tagIds.map((tagId) => ({ noteId, tagId })))
+
+        }
+        console.log({noteId})
+
+        return {
+            id: noteId
         }
     } catch (error) {
         console.log({ error });
@@ -239,7 +245,7 @@ export const updateNote = async ({
                 userId: user.id!,
                 updatedAt: new Date()
             })
-            .where(eq(notesTable.id, id))
+            .where(and(eq(notesTable.id, id), eq(notesTable.userId, user.id!)))
             .returning();
 
         if (!note.id) throw new Error("Failed to update note");
@@ -300,6 +306,10 @@ export const updateNote = async ({
                 .values([...newTagIds].map((tagId) => ({ noteId, tagId })))
                 .onConflictDoNothing();
         }
+
+        return {
+            id: noteId
+        }
     } catch (error) {
         console.log({ error });
         return {
@@ -308,3 +318,88 @@ export const updateNote = async ({
         };
     }
 };
+
+interface ArchiveNoteProps {
+    id: string;
+}
+
+export const archiveNote = async ({id}: ArchiveNoteProps) => {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+        return {
+            error: true,
+            message: "You need to be logged in to archive a note",
+        };
+    }
+
+    try {
+        const [user] = await db
+            .select({ id: usersTable.id })
+            .from(usersTable)
+            .where(eq(usersTable.id, parseInt(session.user.id)));
+    
+        if (!user) {
+            return {
+                error: true,
+                message: "Invalid user",
+            };
+        }
+    
+        await db
+            .update(notesTable)
+            .set({
+                isArchived: true,
+                userId: user.id!,
+                updatedAt: new Date()
+            })
+            .where(and(eq(notesTable.id, parseInt(id)), eq(notesTable.userId, user.id!)))
+    } catch (error) {
+        console.log({error})
+
+        return {
+            error: true,
+            message: "An error occurred"
+        }
+    }
+}
+
+interface DeleteNoteProps {
+    id: string;
+}
+
+export const deleteNote = async ({id}: DeleteNoteProps) => {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+        return {
+            error: true,
+            message: "You need to be logged in to delete a note",
+        };
+    }
+
+    try {
+        const [user] = await db
+            .select({ id: usersTable.id })
+            .from(usersTable)
+            .where(eq(usersTable.id, parseInt(session.user.id)));
+    
+        if (!user) {
+            return {
+                error: true,
+                message: "Invalid user",
+            };
+        }
+    
+        await db
+            .delete(notesTable)
+            .where(and(eq(notesTable.id, parseInt(id)), eq(notesTable.userId, user.id!)))
+    } catch (error) {
+        console.log({error})
+
+        return {
+            error: true,
+            message: "An error occurred"
+        }
+    }
+}

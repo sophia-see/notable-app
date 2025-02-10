@@ -9,10 +9,23 @@ interface NotesListProps {
     notes: NoteType[];
 }
 
+const UNTITLED_NOTE: NoteType = {
+    id: -1,
+    createdAt: new Date(),
+    userId: null,
+    title: "Untitled Note",
+    content: "",
+    updatedAt: new Date(),
+    isArchived: false,
+    tags: []
+}
+
 export default function NotesList({notes}: NotesListProps) {
     const searchParams = useSearchParams();
     const currNote = searchParams.get("noteId") ?? ""
     const pathname = usePathname();
+    const isNew = currNote == "new";
+    const notesList = isNew ? [UNTITLED_NOTE, ...notes] : notes;
     
     const onClickNote = (id: string) => {
         const params = new URLSearchParams(searchParams);
@@ -23,14 +36,15 @@ export default function NotesList({notes}: NotesListProps) {
     }
 
     return (
-        <div className='flex flex-col  lg:pl-8 lg:py-5 lg:pr-4'>
+        <div className='flex flex-col'>
             {
-                notes.map((note, index) => {
+                notesList.map((note, index) => {
+                    const isNew = note.id == -1;
                     const isLast = index == notes.length-1;
                     const isSelected = currNote == note.id.toString();
                     
                     return (
-                        <div className={`pt-1 rounded-[6px] flex flex-col gap-1 cursor-pointer ${isSelected ? "bg-background" : ""} ${!isLast ? "border-b-[1px] border-border" : ""}`} key={note.id.toString()} onClick={() => onClickNote(note.id.toString())}>
+                        <div className={`pt-1 rounded-[6px] flex flex-col gap-1 cursor-pointer ${isSelected || isNew? "bg-background" : ""} ${!isLast ? "border-b-[1px] border-border" : ""}`} key={note.id.toString()} onClick={() => onClickNote(note.id.toString())}>
                             <div className='flex flex-col gap-3 p-2'>
                                 <span className='text-preset-3 text-neutral-950'>{note.title}</span>
                                     {note.tags.length 
@@ -43,9 +57,9 @@ export default function NotesList({notes}: NotesListProps) {
                                         )
                                         : <></>
                                     }
-                                <span className='text-preset-6 text-neutral-700'>
+                                {!isNew && <span className='text-preset-6 text-neutral-700'>
                                     {formatDate(note.createdAt)}
-                                </span>
+                                </span>}
                             </div>
                             {/* {!isLast && <Separator />} */}
                         </div>

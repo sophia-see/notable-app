@@ -66,7 +66,7 @@ export default function TagsSelect({tags, initialSelected}:TagsSelectProps) {
         {selectedOptions.length > 0
           ? (
             selectedOptions.map(option => (
-              <span className="bg-background text-foreground text-preset-6 p-2 rounded-[4px]" key={option}>
+              <span className="bg-background text-foreground text-preset-6 md:text-preset-5 p-2 rounded-[4px]" key={option}>
                 {option}
               </span>
             ))

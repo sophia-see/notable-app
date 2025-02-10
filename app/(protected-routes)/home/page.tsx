@@ -32,9 +32,9 @@ export default async function HomePage({searchParams}: HomePageProps) {
                 </div>
             )}
 
-            <div className='hidden lg:flex w-[290px]'>
+            {!!noteId && <div className='hidden lg:flex w-[290px]'>
                 note settings
-            </div>
+            </div>}
 
             <div className={`${!!noteId ? "hidden" : ""} absolute right-0 bottom-0 mr-4 mb-4`}>
                 <CreateNoteButton />

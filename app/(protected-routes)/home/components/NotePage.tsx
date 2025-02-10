@@ -1,25 +1,25 @@
 "use client";
 
-import { Button } from "@/components/custom-ui/custom-button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/custom-ui/notes-form";
 import { Input } from "@/components/custom-ui/notes-input";
 import { Textarea } from "@/components/custom-ui/notes-textarea";
 import { Separator } from "@/components/ui/separator";
-import { useAppContext } from "@/contexts/AppContext";
 import { NoteType } from "@/db/types";
 import { useToast } from "@/hooks/use-toast";
 import { createNote, updateNote } from "@/server-actions/notes";
 import { notesValidateSchema } from "@/validation/notesValidateSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
-import { IoIosArrowBack } from "react-icons/io";
 import { PiTag } from "react-icons/pi";
 import { z } from "zod";
 import TagsSelect, { Option } from "./TagsSelect";
 import { GoClock } from "react-icons/go";
 import { formatDate } from "@/lib/utils";
 import { useEffect } from "react";
+import NotesHeader from "./NotesHeader";
+import NoteDetails from "./NoteDetails";
+import { Button } from "@/components/custom-ui/custom-button";
 
 interface NotePageProps {
     note: NoteType | null;
@@ -29,7 +29,6 @@ interface NotePageProps {
 const formSchema = notesValidateSchema;
 
 export default function NotePage({ note, tags }: NotePageProps) {
-    const { isDarkMode } = useAppContext();
     const { toast } = useToast();
     const router = useRouter();
 
@@ -44,15 +43,13 @@ export default function NotePage({ note, tags }: NotePageProps) {
     });
 
     useEffect(() => {
-        form.setValue("title", note?.title ?? "")
-        form.setValue("content", note?.content ?? "")
-        form.setValue("isArchived", note?.isArchived ?? false)
-        form.setValue("tags", note?.tags ?? [])
+        form.reset({
+            title: note?.title ?? "",
+            content: note?.content ?? "",
+            isArchived: note?.isArchived ?? false,
+            tags: note?.tags ?? [],
+        })
     }, [note])
-
-    const onGoBack = () => {
-        redirect("/home")
-    }
 
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
         const { title, content, tags, isArchived } = data;
@@ -85,24 +82,15 @@ export default function NotePage({ note, tags }: NotePageProps) {
 
 
     return (
-        <div className="flex flex-col gap-3 h-full">
+        <div className="h-full lg:py-5 lg:px-6 lg:border-r lg:border-border">
             <FormProvider {...form} >
                 <Form {...form}>
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="flex flex-col gap-3 h-full"
+                        className="flex flex-col gap-3 md:gap-4 h-full"
                     >
-                        <div className="flex justify-between items-center">
-                            <div className="flex gap-1 items-center" onClick={onGoBack}>
-                                <IoIosArrowBack className={`${isDarkMode ? "fill-neutral-300" : "fill-neutral-600"}`}/>
-                                <span className={`text-preset-5 ${isDarkMode ? "text-neutral-300" : "text-neutral-600"}`}>Go Back</span>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <Button variant={"ghost"} className="text-preset-5" type="reset">Cancel</Button>
-                                <Button variant={"ghost"} className="text-preset-5 text-primary" type="submit">Save Note</Button>
-                            </div>
-                        </div>
-                        <Separator />
+                        <NotesHeader />
+                        <Separator className="lg:hidden"/>
                         <FormField
                             control={form.control}
                             name="title"
@@ -112,7 +100,7 @@ export default function NotePage({ note, tags }: NotePageProps) {
                                         <Input 
                                             type="text" 
                                             placeholder="Enter a title..." 
-                                            className="text-preset-2 px-0"
+                                            className="text-preset-1 px-0"
                                             {...field} 
                                         />
                                     </FormControl>
@@ -121,28 +109,7 @@ export default function NotePage({ note, tags }: NotePageProps) {
                             )}
                         />
 
-                        <div className="flex flex-col gap-1">
-                            <div className="flex items-center">
-                                <div className="min-w-[115px] flex items-center gap-[6px]">
-                                    <PiTag />
-                                    <span className="text-preset-6 text-neutral-700">Tags</span>
-                                </div>
-                                <div className="flex-1">
-                                    <TagsSelect tags={tags} initialSelected={note?.tags ?? []}/>
-                                </div>
-                            </div>
-                            <div className="flex items-center">
-                                <div className="min-w-[115px] flex items-center gap-[6px] py-4">
-                                    <GoClock />
-                                    <span className="text-preset-6 text-neutral-700">Last edited</span>
-                                </div>
-                                <div className="flex-1">
-                                    <span className="text-preset-6 text-neutral-700">
-                                    {note?.updatedAt ? formatDate(note?.updatedAt) : "N/A"}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                        <NoteDetails tags={tags} note={note}/>
                         
                         <Separator />
 
@@ -152,24 +119,21 @@ export default function NotePage({ note, tags }: NotePageProps) {
                             render={({ field }) => (
                                 <FormItem className="flex-1">
                                     <FormControl>
-                                        <Textarea placeholder="Start typing your note here…" className="h-full px-0" {...field} />
+                                        <Textarea placeholder="Start typing your note here…" className="resize-none h-full px-0 text-preset-5" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+                        <Separator />
+                                
+                        <div className="hidden lg:flex lg:gap-4">
+                            <Button type="submit">Save Note</Button>    
+                            <Button type="button" variant={"secondary"}>Cancel</Button>    
+                        </div>
                     </form>
                 </Form>
             </FormProvider>
-            {/* mobile - tablet header */}
-
-            {/* title */}
-
-            {/* tags, lastEdited */}
-
-            {/* separator */}
-
-            {/* content */}
         </div>
     );
 }

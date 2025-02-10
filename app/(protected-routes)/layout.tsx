@@ -18,8 +18,8 @@ export default async function MainLayout({children}:{children: React.ReactNode})
         <Sidebar />
         <div className="flex flex-col flex-1 h-screen w-full">
           <Navbar />
-          <main className={`relative rounded-t-[12px] bg-background-2 flex-1 overflow-auto`}>
-            <div className='h-full py-5 px-4'>
+          <main className={`relative rounded-t-[12px] lg:rounded-t-none bg-background-2 flex-1 overflow-auto`}>
+            <div className='h-full py-5 px-4 md:py-6 md:px-8 lg:p-0'>
               {children}
             </div>
           </main>

@@ -109,7 +109,7 @@ export default {
 				}],
 				"preset-5": ["14px", {
 					fontWeight: 400,
-					lineHeight: "120%",
+					lineHeight: "130%",
 					letterSpacing: "-0.2px"
 				}],
 				"preset-6": ["12px", {

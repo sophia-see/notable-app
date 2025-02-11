@@ -20,7 +20,7 @@ function LinkItem ({name, path, icon: Icon, pathname}: LinkItemProps) {
     const isActive = pathname.includes(path)
 
     return (
-        <Link href={path} className={`flex items-center gap-1 py-[10px] px-3 rounded-[8px] text-foreground ${isActive ? "bg-neutral-100 text-accent-foreground" : ""}`}>
+        <Link href={path} className={`flex items-center gap-1 py-[10px] px-3 rounded-[8px] text-foreground ${isActive ? "bg-background text-accent-foreground" : ""}`}>
             <Icon size={16} className={isActive ? 'stroke-blue-500' : ""}/>
             <span className='text-preset-4'>{name}</span>
             <IoIosArrowForward className='ml-auto'/>

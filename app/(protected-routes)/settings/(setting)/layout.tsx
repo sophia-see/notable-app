@@ -17,7 +17,7 @@ export default function SettingLayout({children}: SettingLayoutProps) {
   };
 
   return (
-    <div className={`font-${font} flex flex-col gap-3`}>
+    <div className={`font-${font} flex flex-col gap-3 flex-1 lg:max-w-[528px] lg:p-8`}>
       <div className='flex items-center gap-2' onClick={onBackClicked} role='button'>
         <IoIosArrowBack className={`fill-foreground`}/>
         <span className={`text-preset-4 text-foreground`}>Settings</span>

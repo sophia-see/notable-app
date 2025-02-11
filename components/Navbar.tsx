@@ -5,6 +5,7 @@ import { SearchInput } from "./custom-ui/search-input";
 import Image from 'next/image'
 import { CiSettings } from "react-icons/ci";
 import React from "react";
+import { redirect } from "next/navigation";
 
 export default function Navbar() {
     const { isDarkMode } = useAppContext();
@@ -23,7 +24,11 @@ export default function Navbar() {
                 />                    
             </div>
         )
-    }, [isDarkMode])
+    }, [isDarkMode]);
+
+    const onClickSettings = () => {
+        redirect("/settings")
+    }
 
     return (
         <nav 
@@ -44,7 +49,7 @@ export default function Navbar() {
                     className="w-[300px]"
                     placeholder="Search by title, content, or tags…"
                 />
-                <CiSettings className="stroke-neutral-500"/>
+                <CiSettings onClick={onClickSettings} className="stroke-neutral-500 cursor-pointer"/>
             </div>
         </nav>
     );

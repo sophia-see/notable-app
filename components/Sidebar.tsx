@@ -20,7 +20,7 @@ function LinkItem ({name, path, icon: Icon, pathname}: LinkItemProps) {
     const isActive = pathname.includes(path)
 
     return (
-        <Link href={path} className={`flex items-center gap-1 py-[10px] px-3 rounded-[8px] text-neutral-700 ${isActive ? "bg-neutral-100 text-neutral-950" : ""}`}>
+        <Link href={path} className={`flex items-center gap-1 py-[10px] px-3 rounded-[8px] text-foreground ${isActive ? "bg-neutral-100 text-accent-foreground" : ""}`}>
             <Icon size={16} className={isActive ? 'stroke-blue-500' : ""}/>
             <span className='text-preset-4'>{name}</span>
             <IoIosArrowForward className='ml-auto'/>
@@ -32,7 +32,7 @@ export default function Sidebar() {
     const pathname = usePathname();
     
     return (
-        <aside className={`hidden lg:block w-[272px] h-screen overflow-auto text-neutral-700 py-3 px-4 scrollbar-hide border-r-[1px] border-border bg-background-2`}>
+        <aside className={`hidden lg:block w-[272px] h-screen overflow-auto text-foreground py-3 px-4 scrollbar-hide border-r-[1px] border-border bg-background-2`}>
             <div className='flex flex-col gap-4'>
                 <div className='w-[95px] h-[28px]'>
                     <Image

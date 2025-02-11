@@ -35,7 +35,7 @@ function NavLink ({name, path, currentPath, icon: Icon, isDarkMode}: NavLinkProp
                 size={24} 
                 color={isActive ? '#335CFF' : isDarkMode ? "#99A0AE" : "#525866"}
             />
-            <span className={`hidden md:block ${isActive ? "text-blue-500" : isDarkMode ? "text-neutral-400" : "text-neutral-600"} text-preset-6`}>
+            <span className={`hidden md:block ${isActive ? "text-primary" : "text-foreground"} text-preset-6`}>
                 {name}
             </span>
         </Link>        

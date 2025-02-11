@@ -35,14 +35,14 @@ export default function Item<T> ({name, description, icon, selected, setSelected
             p-2 
             border-[1px] 
             border-border bg-background-2
-            ${isDarkMode ? "text-neutral-0" : "text-neutral-950 "}
+            text-accent-foreground
             rounded-[12px] 
           `}>
           {icon}
         </div>
         <div className='flex flex-col gap-[6px]'>
-          <span className={`text-preset-4 ${isDarkMode ? "text-neutral-0" :"text-neutral-950"}`}>{name}</span>
-          <span className={`text-preset-6 ${isDarkMode ? "text-neutral-300" :"text-neutral-700"}`}>{description}</span>
+          <span className={`text-preset-4 text-accent-foreground`}>{name}</span>
+          <span className={`text-preset-6 text-foreground`}>{description}</span>
         </div>
       </div>
       <div className={`w-[16px] h-[16px] ${isActive ? `border-[4px] ${isDarkMode ? "bg-transparent" : "bg-neutral-0"} border-blue-500` : `border-[2px] ${isDarkMode ? "border-neutral-600" :"border-neutral-200"}`} rounded-full`}></div>

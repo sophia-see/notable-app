@@ -137,7 +137,7 @@ export default function NotePage({ note, tags }: NotePageProps) {
                             render={({ field }) => (
                                 <FormItem className="flex-1">
                                     <FormControl>
-                                        <Textarea placeholder="Start typing your note here…" className="resize-none h-full px-0 text-preset-5" {...field} />
+                                        <Textarea placeholder="Start typing your note here…" className="resize-none h-full px-0 text-preset-5 text-accent-foreground" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

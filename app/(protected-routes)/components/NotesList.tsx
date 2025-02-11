@@ -46,18 +46,18 @@ export default function NotesList({notes}: NotesListProps) {
                     return (
                         <div className={`pt-1 rounded-[6px] flex flex-col gap-1 cursor-pointer ${isSelected || isNew? "bg-background" : ""} ${!isLast ? "border-b-[1px] border-border" : ""}`} key={note.id.toString()} onClick={() => onClickNote(note.id.toString())}>
                             <div className='flex flex-col gap-3 p-2'>
-                                <span className='text-preset-3 text-neutral-950'>{note.title}</span>
+                                <span className='text-preset-3 text-accent-foreground'>{note.title}</span>
                                     {note.tags.length 
                                         ? (
                                             <div className='flex gap-1'>
                                                 {note.tags.map((tag, index) => (
-                                                    <div key={`${index}`} className='text-neutral-950 text-preset-6 p-1 bg-neutral-200 rounded-[4px]'>{tag}</div>
+                                                    <div key={`${index}`} className='bg-background text-foreground text-preset-6 p-1 rounded-[4px]'>{tag}</div>
                                                 ))}
                                             </div>
                                         )
                                         : <></>
                                     }
-                                {!isNew && <span className='text-preset-6 text-neutral-700'>
+                                {!isNew && <span className='text-preset-6 text-foreground'>
                                     {formatDate(note.createdAt)}
                                 </span>}
                             </div>

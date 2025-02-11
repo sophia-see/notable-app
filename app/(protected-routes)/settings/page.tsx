@@ -38,9 +38,7 @@ function SettingsItem({
                 }`}
             />
             <span
-                className={`text-preset-4 ${
-                    isDarkMode ? "text-neutral-0" : "text-neutral-950"
-                }`}
+                className={`text-preset-4 text-accent-foreground`}
             >
                 {name}
             </span>
@@ -57,9 +55,7 @@ export default function SettingsPage() {
     return (
         <>
             <div
-                className={`lg:hidden flex flex-col gap-4 ${
-                    isDarkMode ? "text-neutral-0" : "text-neutral-950"
-                }`}
+                className={`lg:hidden flex flex-col gap-4 text-accent-foreground`}
             >
                 <span className="text-preset-1">Settings</span>
                 <div className="flex flex-col gap-2">

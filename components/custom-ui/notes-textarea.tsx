@@ -19,6 +19,8 @@ const Textarea = React.forwardRef<
             placeholder:text-muted-foreground 
             focus-visible:outline-none focus-visible:ring-0 
             disabled:cursor-not-allowed disabled:opacity-50 
+            text-accent-foreground
+
         `,
         className
       )}

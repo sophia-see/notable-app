@@ -19,8 +19,8 @@ export default function ColorThemePage() {
   return (
     <div className={`flex flex-col gap-5`}>
       <div className='flex flex-col gap-2'>
-        <span className={`${isDarkMode ? "text-neutral-0" : "text-neutral-950"} text-preset-1`}>Color Theme</span>
-        <span className={`${isDarkMode ? "text-neutral-300" : "text-neutral-700"} text-preset-5`}>Choose your color theme:</span>
+        <span className={`text-accent-foreground text-preset-1`}>Color Theme</span>
+        <span className={`text-foreground text-preset-5`}>Choose your color theme:</span>
       </div>
       <div className='flex flex-col gap-4'>
         <Item

@@ -89,7 +89,7 @@ export default function LoginForm() {
                                     <FormLabel>Password</FormLabel>
                                     <Link
                                         href={"/forgot-password"}
-                                        className="underline text-neutral-600 text-[12px] leading-[140%]"
+                                        className="underline text-foreground text-[12px] leading-[140%]"
                                     >
                                         Forgot
                                     </Link>
@@ -111,7 +111,7 @@ export default function LoginForm() {
                     </Button>
                     <div className="flex flex-col items-center gap-4">
                         <Separator />
-                        <span className="mt-2 text-neutral-600 text-preset-5">
+                        <span className="mt-2 text-foreground text-preset-5">
                             Or log in with:
                         </span>
                         <Button
@@ -124,11 +124,11 @@ export default function LoginForm() {
                         </Button>
                         <Separator />
                     </div>
-                    <div className="text-center text-neutral-600  text-preset-5">
+                    <div className="text-center text-foreground text-preset-5">
                         No account yet?{" "}
                         <Link
                             href={"/register"}
-                            className="text-neutral-950 hover:underline"
+                            className="text-accent-foreground hover:underline"
                         >
                             Sign up
                         </Link>

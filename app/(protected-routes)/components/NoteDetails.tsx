@@ -16,7 +16,7 @@ export default function NoteDetails({note, tags}: NoteDetailsProps) {
       <div className="flex items-center">
         <div className="min-w-[115px] flex items-center gap-[6px]">
             <PiTag />
-            <span className="text-preset-6 md:text-preset-5 text-neutral-700">Tags</span>
+            <span className="text-preset-6 md:text-preset-5 text-foreground">Tags</span>
         </div>
         <div className="flex-1">
             <TagsSelect tags={tags} initialSelected={note?.tags ?? []}/>
@@ -25,10 +25,10 @@ export default function NoteDetails({note, tags}: NoteDetailsProps) {
       <div className="flex items-center">
         <div className="min-w-[115px] flex items-center gap-[6px] py-4">
             <GoClock />
-            <span className="text-preset-6 md:text-preset-5 text-neutral-700">Last edited</span>
+            <span className="text-preset-6 md:text-preset-5 text-foreground">Last edited</span>
         </div>
         <div className="flex-1">
-            <span className="text-preset-6 md:text-preset-5 text-neutral-700">
+            <span className="text-preset-6 md:text-preset-5 text-foreground">
             {note?.updatedAt ? formatDate(note?.updatedAt) : "N/A"}
             </span>
         </div>

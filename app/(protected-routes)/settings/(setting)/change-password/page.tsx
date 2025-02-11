@@ -63,9 +63,7 @@ export default function ChangePasswordPassword() {
     return (
         <div className={`flex flex-col gap-6`}>
             <span
-                className={`${
-                    isDarkMode ? "text-neutral-0" : "text-neutral-950"
-                } text-preset-1`}
+                className={`text-accent-foreground text-preset-1`}
             >
                 Change Password
             </span>

@@ -119,7 +119,7 @@ export default function RegisterForm() {
                     </Button>
                     <div className="flex flex-col items-center gap-4">
                         <Separator />
-                        <span className="mt-2 text-neutral-600 text-preset-5">
+                        <span className="mt-2 text-foreground text-preset-5">
                             Or log in with:
                         </span>
                         <Button variant={"outline"} className="w-full">
@@ -128,11 +128,11 @@ export default function RegisterForm() {
                         </Button>
                         <Separator />
                     </div>
-                    <div className="text-center text-neutral-600  text-preset-5">
+                    <div className="text-center text-foreground text-preset-5">
                         Already have an account?{" "}
                         <Link
                             href={"/login"}
-                            className="text-neutral-950 hover:underline"
+                            className="text-accent-foreground hover:underline"
                         >
                             Login
                         </Link>

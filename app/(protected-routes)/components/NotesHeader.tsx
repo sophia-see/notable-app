@@ -73,8 +73,8 @@ export default function NotesHeader() {
   return (
     <div className="flex justify-between items-center lg:hidden">
         <div className="flex gap-1 items-center" onClick={onGoBack}>
-            <IoIosArrowBack className={`${isDarkMode ? "fill-neutral-300" : "fill-neutral-600"}`}/>
-            <span className={`text-preset-5 ${isDarkMode ? "text-neutral-300" : "text-neutral-600"}`}>Go Back</span>
+            <IoIosArrowBack className={`fill-foreground`}/>
+            <span className={`text-preset-5 text-foreground`}>Go Back</span>
         </div>
         <div className="flex items-center gap-4">
             {!isNew &&<MdOutlineDeleteOutline onClick={onDelete} className='fill-accent-foreground'/>}

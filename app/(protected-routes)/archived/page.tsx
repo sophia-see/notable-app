@@ -35,7 +35,7 @@ export default async function ArchivedPage({ searchParams }: ArchivedPageProps) 
                     <div className="hidden lg:block">
                         <CreateNoteButton />
                     </div>
-                    <span className="text-preset-5 text-neutral-700">
+                    <span className="text-preset-5 text-foreground">
                       All your archived notes are stored here. You can restore or delete them anytime.
                     </span>
                     <NotesList notes={userNotes} />

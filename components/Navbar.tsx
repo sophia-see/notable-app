@@ -36,7 +36,7 @@ export default function Navbar() {
             `}
         >
             {renderLogo}
-            <div className={`hidden lg:block text-preset-1 ${isDarkMode ? "text-neutral-0" :"text-neutral-950"}`}>
+            <div className={`hidden lg:block text-preset-1 text-accent-foreground`}>
                 All Notes
             </div>
             <div className="hidden lg:flex gap-4 items-center">

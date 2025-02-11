@@ -77,7 +77,7 @@ export default function NotesHeader() {
             {!isNew && <MdOutlineDeleteOutline onClick={onDelete} className='fill-accent-foreground'/>}
             {!isNew && <IoArchiveOutline onClick={onArchive} className='stroke-accent-foreground'/>}
             <Button variant={"ghost"} disabled={!form.formState.isDirty} className="w-auto p-0 text-preset-5" type='button' onClick={onCancel}>Cancel</Button>
-            <Button variant={"ghost"} className="text-preset-5 text-primary w-auto p-0" type="submit">Save Note</Button>
+            <Button variant={"ghost"} disabled={!form.formState.isDirty} className="text-preset-5 text-primary w-auto p-0" type="submit">Save Note</Button>
         </div>
     </div>
   )

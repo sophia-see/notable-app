@@ -78,7 +78,7 @@ export default function TagsSelect({tags, initialSelected}:TagsSelectProps) {
           : <span className="py-3 text-muted-foreground text-preset-6">Select tags</span>}
       </div>
       {isOpen && (
-        <div ref={dropdownRef} className="absolute mt-2 w-full bg-white border p-2 shadow-md max-h-[220px] overflow-auto">
+        <div ref={dropdownRef} className="absolute w-full max-w-[300px] bg-white border p-2 shadow-md max-h-[220px] overflow-auto rounded-b-[8px]">
           {options.map((option) => (
             <div
               key={option.value}

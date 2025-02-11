@@ -93,6 +93,9 @@ export default function NotePage({ note, tags }: NotePageProps) {
         router.refresh();
     }
 
+    const onCancel = () => {
+        form.reset();
+    }
 
     return (
         <div className="h-full lg:py-5 lg:px-6 lg:border-r lg:border-border">
@@ -141,8 +144,8 @@ export default function NotePage({ note, tags }: NotePageProps) {
                         <Separator className="hidden lg:block"/>
                                 
                         <div className="hidden lg:flex lg:gap-4">
-                            <Button type="submit">Save Note</Button>    
-                            <Button type="button" variant={"secondary"}>Cancel</Button>    
+                            <Button disabled={!form.formState.isDirty} type="submit">Save Note</Button>    
+                            <Button disabled={!form.formState.isDirty} type="button" variant={"secondary"} onClick={onCancel}>Cancel</Button>    
                         </div>
                     </form>
                 </Form>

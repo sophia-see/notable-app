@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { createNote, updateNote } from "@/server-actions/notes";
 import { notesValidateSchema } from "@/validation/notesValidateSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { redirect, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Option } from "./TagsSelect";
@@ -29,6 +29,7 @@ export default function NotePage({ note, tags }: NotePageProps) {
     const { toast } = useToast();
     const router = useRouter();
     const searchParams = useSearchParams();
+    const pathname = usePathname();
     const noteId = searchParams.get("noteId") ?? "";
     const isNewNote = noteId == "new"
     
@@ -43,13 +44,15 @@ export default function NotePage({ note, tags }: NotePageProps) {
     });
 
     useEffect(() => {
+        const isArchived = pathname.includes("archived");
+
         form.reset({
             title: note?.title ?? "",
             content: note?.content ?? "",
-            isArchived: note?.isArchived ?? false,
+            isArchived: note?.isArchived ?? isArchived ?? false,
             tags: note?.tags ?? [],
         })
-    }, [note, form]);
+    }, [note, form, pathname]);
 
     const renderTags = React.useMemo(() => {
         return <NoteDetails tags={tags} note={note}/>
@@ -85,7 +88,7 @@ export default function NotePage({ note, tags }: NotePageProps) {
 
                 params.set("noteId", response?.id?.toString())
 
-                redirect(`/home?${params.toString()}`)
+                redirect(`${pathname}?${params.toString()}`)
             }
         }
 

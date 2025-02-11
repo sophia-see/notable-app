@@ -1,6 +1,6 @@
 "use server";
 
-import { Option } from "@/app/(protected-routes)/home/components/TagsSelect";
+import { Option } from "@/app/(protected-routes)/components/TagsSelect";
 import { auth } from "@/auth";
 import db from "@/db/drizzle";
 import { notesTable, noteTagsTable, tagsTable, usersTable } from "@/db/schema";
@@ -17,29 +17,32 @@ export const tagsByUser = async () => {
     const tags = await db
         .select({
             tagId: tagsTable.id,
-            tagName: tagsTable.name
+            tagName: tagsTable.name,
         })
         .from(tagsTable)
         .leftJoin(noteTagsTable, eq(tagsTable.id, noteTagsTable.tagId))
         .leftJoin(notesTable, eq(noteTagsTable.noteId, notesTable.id))
-        .where(eq(notesTable.userId, parseInt(userId)))
+        .where(eq(notesTable.userId, parseInt(userId)));
 
-        
-    const uniqueTags = Array.from(new Set(tags.map((tag) => tag.tagName)))
-        .map((tagName) => ({
+    const uniqueTags = Array.from(new Set(tags.map((tag) => tag.tagName))).map(
+        (tagName) => ({
             tagName,
         })
     );
 
-    const formatAsOptions = uniqueTags.map(i => ({
+    const formatAsOptions = uniqueTags.map((i) => ({
         label: i.tagName,
-        value: i.tagName
-    }))
+        value: i.tagName,
+    }));
 
-    return formatAsOptions as Option[] ?? [];
+    return (formatAsOptions as Option[]) ?? [];
+};
+
+interface NotesByUserProps {
+    isArchived?: boolean;
 }
 
-export const notesByUser = async () => {
+export const notesByUser = async ({ isArchived = false }: NotesByUserProps) => {
     const session = await auth();
 
     if (!session?.user?.id) throw new Error("No user logged in");
@@ -56,7 +59,12 @@ export const notesByUser = async () => {
         .from(notesTable)
         .leftJoin(noteTagsTable, eq(notesTable.id, noteTagsTable.noteId))
         .leftJoin(tagsTable, eq(noteTagsTable.tagId, tagsTable.id))
-        .where(and(eq(notesTable.isArchived, false), eq(notesTable.userId, parseInt(session.user.id))));
+        .where(
+            and(
+                eq(notesTable.isArchived, isArchived),
+                eq(notesTable.userId, parseInt(session.user.id))
+            )
+        );
 
     const notesMap = new Map();
 
@@ -85,7 +93,7 @@ export const createNote = async ({
     title,
     content,
     tags,
-    isArchived
+    isArchived,
 }: CreateNotesProps) => {
     const notesSchema = notesValidateSchema;
 
@@ -93,7 +101,7 @@ export const createNote = async ({
         title,
         content,
         tags,
-        isArchived
+        isArchived,
     });
 
     if (!formValidation.success) {
@@ -147,14 +155,19 @@ export const createNote = async ({
                     let [tag] = await db
                         .select()
                         .from(tagsTable)
-                        .where(and(eq(tagsTable.name, tagName), (eq(tagsTable.userId, userId))));
+                        .where(
+                            and(
+                                eq(tagsTable.name, tagName),
+                                eq(tagsTable.userId, userId)
+                            )
+                        );
 
                     if (!tag) {
                         [tag] = await db
                             .insert(tagsTable)
                             .values({
                                 name: tagName,
-                                userId
+                                userId,
                             })
                             .returning();
                     }
@@ -165,13 +178,12 @@ export const createNote = async ({
 
             await db
                 .insert(noteTagsTable)
-                .values(tagIds.map((tagId) => ({ noteId, tagId })))
-
+                .values(tagIds.map((tagId) => ({ noteId, tagId })));
         }
 
         return {
-            id: noteId
-        }
+            id: noteId,
+        };
     } catch (error) {
         console.log({ error });
         return {
@@ -194,7 +206,7 @@ export const updateNote = async ({
     title,
     content,
     tags,
-    isArchived
+    isArchived,
 }: UpdateNotesProps) => {
     const notesSchema = notesValidateSchema;
 
@@ -202,7 +214,7 @@ export const updateNote = async ({
         title,
         content,
         tags,
-        isArchived
+        isArchived,
     });
 
     if (!formValidation.success) {
@@ -242,7 +254,7 @@ export const updateNote = async ({
                 content,
                 isArchived,
                 userId: user.id!,
-                updatedAt: new Date()
+                updatedAt: new Date(),
             })
             .where(and(eq(notesTable.id, id), eq(notesTable.userId, user.id!)))
             .returning();
@@ -265,14 +277,19 @@ export const updateNote = async ({
                 let [tag] = await db
                     .select()
                     .from(tagsTable)
-                    .where(and(eq(tagsTable.name, tagName), (eq(tagsTable.userId, userId))));
+                    .where(
+                        and(
+                            eq(tagsTable.name, tagName),
+                            eq(tagsTable.userId, userId)
+                        )
+                    );
 
                 if (!tag) {
                     [tag] = await db
                         .insert(tagsTable)
                         .values({
                             name: tagName,
-                            userId
+                            userId,
                         })
                         .returning();
                 }
@@ -281,11 +298,12 @@ export const updateNote = async ({
             })
         );
 
-        
         const newTagIds = new Set(tagIds);
 
         // Find tag IDs that need to be removed (present in DB but not in new tags)
-        const tagsToRemove = [...existingTagIds].filter((tagId) => !newTagIds.has(tagId));
+        const tagsToRemove = [...existingTagIds].filter(
+            (tagId) => !newTagIds.has(tagId)
+        );
 
         if (tagsToRemove.length > 0) {
             await db
@@ -295,7 +313,7 @@ export const updateNote = async ({
                         eq(noteTagsTable.noteId, noteId),
                         inArray(noteTagsTable.tagId, tagsToRemove)
                     )
-                )
+                );
         }
 
         // Insert new tag relations (prevent duplicates)
@@ -307,8 +325,8 @@ export const updateNote = async ({
         }
 
         return {
-            id: noteId
-        }
+            id: noteId,
+        };
     } catch (error) {
         console.log({ error });
         return {
@@ -320,9 +338,10 @@ export const updateNote = async ({
 
 interface ArchiveNoteProps {
     id: string;
+    isArchived?: boolean;
 }
 
-export const archiveNote = async ({id}: ArchiveNoteProps) => {
+export const archiveNote = async ({ id, isArchived = true }: ArchiveNoteProps) => {
     const session = await auth();
 
     if (!session?.user?.id) {
@@ -337,37 +356,42 @@ export const archiveNote = async ({id}: ArchiveNoteProps) => {
             .select({ id: usersTable.id })
             .from(usersTable)
             .where(eq(usersTable.id, parseInt(session.user.id)));
-    
+
         if (!user) {
             return {
                 error: true,
                 message: "Invalid user",
             };
         }
-    
+
         await db
             .update(notesTable)
             .set({
-                isArchived: true,
+                isArchived,
                 userId: user.id!,
-                updatedAt: new Date()
+                updatedAt: new Date(),
             })
-            .where(and(eq(notesTable.id, parseInt(id)), eq(notesTable.userId, user.id!)))
+            .where(
+                and(
+                    eq(notesTable.id, parseInt(id)),
+                    eq(notesTable.userId, user.id!)
+                )
+            );
     } catch (error) {
-        console.log({error})
+        console.log({ error });
 
         return {
             error: true,
-            message: "An error occurred"
-        }
+            message: "An error occurred",
+        };
     }
-}
+};
 
 interface DeleteNoteProps {
     id: string;
 }
 
-export const deleteNote = async ({id}: DeleteNoteProps) => {
+export const deleteNote = async ({ id }: DeleteNoteProps) => {
     const session = await auth();
 
     if (!session?.user?.id) {
@@ -382,23 +406,28 @@ export const deleteNote = async ({id}: DeleteNoteProps) => {
             .select({ id: usersTable.id })
             .from(usersTable)
             .where(eq(usersTable.id, parseInt(session.user.id)));
-    
+
         if (!user) {
             return {
                 error: true,
                 message: "Invalid user",
             };
         }
-    
+
         await db
             .delete(notesTable)
-            .where(and(eq(notesTable.id, parseInt(id)), eq(notesTable.userId, user.id!)))
+            .where(
+                and(
+                    eq(notesTable.id, parseInt(id)),
+                    eq(notesTable.userId, user.id!)
+                )
+            );
     } catch (error) {
-        console.log({error})
+        console.log({ error });
 
         return {
             error: true,
-            message: "An error occurred"
-        }
+            message: "An error occurred",
+        };
     }
-}
+};

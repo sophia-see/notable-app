@@ -2,10 +2,11 @@
 
 import { useToast } from '@/hooks/use-toast';
 import { archiveNote, deleteNote } from '@/server-actions/notes';
-import { redirect, useSearchParams } from 'next/navigation';
+import { redirect, usePathname, useSearchParams } from 'next/navigation';
 import React from 'react'
 import { IoArchiveOutline } from 'react-icons/io5'
 import { MdOutlineDeleteOutline } from "react-icons/md";
+import { RiResetLeftFill } from "react-icons/ri";
 
 interface ItemProps {
     onClick: () => void; 
@@ -30,12 +31,14 @@ function Item ({onClick, children}: ItemProps) {
 
 export default function NoteSettings() {
     const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const isArchived = pathname.includes("archived")
     const noteId = searchParams.get("noteId") ?? ""
     const { toast } = useToast();
 
-    const onArchive = async () => {
+    const onToggleArchive = async () => {
         if (noteId) {
-            const response = await archiveNote({id: noteId});
+            const response = await archiveNote({id: noteId, isArchived: !isArchived});
 
             if (response?.error) {
                 toast({
@@ -75,9 +78,9 @@ export default function NoteSettings() {
 
     return (
         <div className='flex flex-col gap-3 w-full py-5 pl-4'>
-            <Item onClick={onArchive}>
-                <IoArchiveOutline />
-                <span className='text-preset-4 text-foreground'>Archive Note</span> 
+            <Item onClick={onToggleArchive}>
+                {isArchived ? <RiResetLeftFill  /> : <IoArchiveOutline />}
+                <span className='text-preset-4 text-foreground'>{isArchived ? "Restore Note" : "Archive Note"}</span> 
             </Item>
             <Item onClick={onDelete}>
                 <MdOutlineDeleteOutline />

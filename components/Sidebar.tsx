@@ -6,8 +6,31 @@ import { HiOutlineHome } from "react-icons/hi2";
 import { IoArchiveOutline } from "react-icons/io5";
 import { IoIosArrowForward } from "react-icons/io";
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { IconType } from 'react-icons/lib';
+
+interface LinkItemProps {
+    name: string;
+    path: string;
+    icon: IconType;
+    pathname: string;
+}
+
+function LinkItem ({name, path, icon: Icon, pathname}: LinkItemProps) {
+    const isActive = pathname.includes(path)
+
+    return (
+        <Link href={path} className={`flex items-center gap-1 py-[10px] px-3 rounded-[8px] text-neutral-700 ${isActive ? "bg-neutral-100 text-neutral-950" : ""}`}>
+            <Icon size={16} className={isActive ? 'stroke-blue-500' : ""}/>
+            <span className='text-preset-4'>{name}</span>
+            <IoIosArrowForward className='ml-auto'/>
+        </Link>
+    )
+}
 
 export default function Sidebar() {
+    const pathname = usePathname();
+    
     return (
         <aside className={`hidden lg:block w-[272px] h-screen overflow-auto text-neutral-700 py-3 px-4 scrollbar-hide border-r-[1px] border-border bg-background-2`}>
             <div className='flex flex-col gap-4'>
@@ -26,16 +49,8 @@ export default function Sidebar() {
                 <div className='flex flex-col gap-2'>
                     {/* main selection */}
                     <div className='flex flex-col gap-1'>
-                        <Link href={"/home"} className='flex items-center gap-1 py-[10px] px-3 rounded-[8px] bg-neutral-100 text-neutral-950'>
-                            <HiOutlineHome className='stroke-blue-500'/>
-                            <span className='text-preset-4'>All Notes</span>
-                            <IoIosArrowForward className='ml-auto'/>
-                        </Link>
-                        <Link href={"/archived"} className='flex items-center gap-1 py-[10px] px-3 rounded-[8px]'>
-                            <IoArchiveOutline />
-                            <span className='text-preset-4'>Archived Notes</span>
-                            <IoIosArrowForward className='ml-auto'/>
-                        </Link>
+                        <LinkItem path={"/home"} name='All Notes' icon={HiOutlineHome} pathname={pathname}/>
+                        <LinkItem path={"/archived"} name='Archived Notes' icon={IoArchiveOutline} pathname={pathname}/>
                     </div>
 
                     {/* tags */}

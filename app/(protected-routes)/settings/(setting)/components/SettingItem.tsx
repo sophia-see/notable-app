@@ -13,8 +13,6 @@ export default function Item<T> ({name, description, icon, selected, setSelected
   const { isDarkMode } = useAppContext();
   const isActive = value == selected;
 
-  console.log({value, selected, isActive})
-
   const onClickItem = () => {
     setSelected(value)
   }

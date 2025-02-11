@@ -11,7 +11,6 @@ interface NoteDetailsProps {
 }
 
 export default function NoteDetails({note, tags}: NoteDetailsProps) {
-  console.log({tags: note?.tags})
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-center">

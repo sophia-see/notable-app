@@ -53,9 +53,7 @@ export default function LoginForm() {
         e: React.MouseEvent<HTMLButtonElement>
     ) => {
         e.preventDefault();
-        const res = await loginWithGoogle();
-
-        console.log({ res });
+        await loginWithGoogle();
     };
 
     return (

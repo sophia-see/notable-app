@@ -52,7 +52,6 @@ export const AppProvider = ({children}: AppProviderProps) => {
     const isSystem = color == COLOR.system;
     const isSystemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     const isDark = isSystem ? isSystemDark : color == COLOR.dark;
-    console.log({isSystem, isSystemDark, isDark, color})
     setIsDarkMode(isDark);
     
     localStorage.setItem("color", color);

@@ -11,7 +11,6 @@ export default function AppWrapperChildren({children}: AppWrapperChildrenProps) 
   const { font, isDarkMode } = useAppContext();
 
   React.useEffect(() => {
-    console.log({isDarkMode})
     if (isDarkMode)
       document.documentElement.classList.add("dark");
     else 

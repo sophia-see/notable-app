@@ -80,7 +80,6 @@ export default function NotePage({ note, tags }: NotePageProps) {
                 title: isNewNote ? "Create Note Saved" : "Update Note Saved" ,
             })
 
-            console.log({id: response?.id})
             if (isNewNote && !!response?.id) {
                 const params = new URLSearchParams(searchParams);
 

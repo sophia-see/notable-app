@@ -168,7 +168,6 @@ export const createNote = async ({
                 .values(tagIds.map((tagId) => ({ noteId, tagId })))
 
         }
-        console.log({noteId})
 
         return {
             id: noteId

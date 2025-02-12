@@ -11,7 +11,6 @@ import {
     FormMessage,
 } from "@/components/custom-ui/settings-form";
 import { Input } from "@/components/custom-ui/settings-input";
-import { useAppContext } from "@/contexts/AppContext";
 import { useToast } from "@/hooks/use-toast";
 import { changePassword } from "@/server-actions/auth";
 import { passwordMatchSchema } from "@/validation/passwordMatchSchema";
@@ -28,7 +27,6 @@ const formSchema = z
     .and(passwordMatchSchema);
 
 export default function ChangePasswordPassword() {
-    const { isDarkMode } = useAppContext();
     const { toast } = useToast();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),

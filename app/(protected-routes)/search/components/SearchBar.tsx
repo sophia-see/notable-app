@@ -2,7 +2,7 @@
 
 import { SearchInput } from '@/components/custom-ui/search-input'
 import { redirect, usePathname, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useDebouncedCallback } from 'use-debounce';
 
 export default function SearchBar() {

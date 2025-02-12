@@ -10,7 +10,7 @@ interface SettingLayoutProps {
 }
 
 export default function SettingLayout({children}: SettingLayoutProps) {
-  const { font, isDarkMode } = useAppContext();
+  const { font } = useAppContext();
 
   const onBackClicked = () => {
     redirect(`/settings`)

@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import Item from '../components/SettingItem';
 
 export default function FontThemePage() {
-  const { font, setFont, isDarkMode } = useAppContext();
+  const { font, setFont } = useAppContext();
   const [tempFont, setTempFont] = useState<FONT>(font);
 
   const onSaveFont = () => {

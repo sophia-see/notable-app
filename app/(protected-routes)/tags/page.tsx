@@ -1,7 +1,5 @@
-import { Separator } from '@/components/ui/separator';
 import { tagsByUser } from '@/server-actions/notes'
 import React from 'react'
-import { PiTag } from 'react-icons/pi';
 import TagsList from './components/TagsList';
 
 export default async function TagsPage() {

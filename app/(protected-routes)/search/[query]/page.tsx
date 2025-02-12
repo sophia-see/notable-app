@@ -1,11 +1,9 @@
 import React from 'react'
-import BackButton from '../../components/BackButton';
-import { notesByUserAndTag, searchNotesByUser, tagsByUser } from '@/server-actions/notes';
+import { searchNotesByUser, tagsByUser } from '@/server-actions/notes';
 import NotesList from '../../components/NotesList';
 import NotePage from '../../components/NotePage';
 import NoteSettings from '../../components/NoteSettings';
 import CreateNoteButton from '../../components/CreateNoteButton';
-import SearchBar from '../components/SearchBar';
 
 interface TagPageProps {
   params: Promise<{
@@ -36,7 +34,7 @@ export default async function SearchPage({params, searchParams}:TagPageProps) {
           <CreateNoteButton />
         </div>
         <div className='text-preset-5 text-foreground'>
-          All notes matching <span className='text-accent-foreground'>"{query}"</span> are displayed below.
+          All notes matching <span className='text-accent-foreground'>&quot;{query}&quot;</span> are displayed below.
         </div>
         <NotesList notes={notes} />
       </div>

@@ -43,7 +43,7 @@ export default async function TagPage({params, searchParams}:TagPageProps) {
           <CreateNoteButton />
         </div>
         <div className='text-preset-5 text-foreground'>
-          All notes with the <span className='text-accent-foreground'>"{tagName}"</span> tag are shown here.
+          All notes with the <span className='text-accent-foreground'>&quot;{tagName}&quot;</span> tag are shown here.
         </div>
         <NotesList notes={notes} />
       </div>

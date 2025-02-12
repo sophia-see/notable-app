@@ -1,13 +1,11 @@
 "use client"
 
 import { Button } from '@/components/custom-ui/custom-button'
-import { useAppContext } from '@/contexts/AppContext'
 import { useToast } from '@/hooks/use-toast';
 import { archiveNote, deleteNote } from '@/server-actions/notes';
 import { redirect, usePathname, useSearchParams } from 'next/navigation';
 import React from 'react'
 import { useFormContext } from 'react-hook-form';
-import { IoIosArrowBack } from 'react-icons/io'
 import { IoArchiveOutline } from 'react-icons/io5';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import { RiResetLeftFill } from "react-icons/ri";
@@ -15,7 +13,6 @@ import BackButton from './BackButton';
 
 export default function NotesHeader() {
   const form = useFormContext();
-  const { isDarkMode } = useAppContext();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const isArchived = pathname.includes("archived")

@@ -8,12 +8,14 @@ import React from 'react'
 
 export default async function MainLayout({children}:{children: React.ReactNode}) {
   const session = await auth();
-  const tags = await tagsByUser();
 
   if (!session?.user?.id) {
+    console.log("no log in")
     redirect("/login")
   }
-
+  
+  const tags = await tagsByUser();
+  
   return (
     <div className='min-h-screen w-full flex'>
       <div className="flex h-screen w-full">

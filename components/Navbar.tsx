@@ -62,7 +62,7 @@ export default function Navbar() {
     
     const onSearchChange = useDebouncedCallback((value: string) => {
         redirect(`/search/${value}`)
-    }, 500);
+    }, 300);
     
 
     const onClickSettings = () => {

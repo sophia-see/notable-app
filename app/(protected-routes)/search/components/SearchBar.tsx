@@ -13,7 +13,7 @@ export default function SearchBar() {
 
   const onSearchChange = useDebouncedCallback((value: string) => {
     redirect(`/search/${value}`)
-  }, 500);
+  }, 300);
 
   return (
     <div className={`${!!noteId ? "hidden" : "flex"} flex-col gap-4 lg:hidden`}>

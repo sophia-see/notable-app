@@ -5,7 +5,7 @@ import { auth } from "@/auth";
 import db from "@/db/drizzle";
 import { notesTable, noteTagsTable, tagsTable, usersTable } from "@/db/schema";
 import { notesValidateSchema } from "@/validation/notesValidateSchema";
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, ilike, inArray } from "drizzle-orm";
 
 export const tagsByUser = async () => {
     const session = await auth();
@@ -36,6 +36,64 @@ export const tagsByUser = async () => {
     }));
 
     return (formatAsOptions as Option[]) ?? [];
+};
+
+interface NotesByUserAndTagProps {
+    tagName: string;
+}
+
+export const notesByUserAndTag = async ({ tagName }: NotesByUserAndTagProps) => {
+    const session = await auth();
+
+    if (!session?.user?.id) throw new Error("No user logged in");
+
+    const noteIdsData = await db
+        .select({
+            noteId: notesTable.id
+        })
+        .from(notesTable)
+        .leftJoin(noteTagsTable, eq(notesTable.id, noteTagsTable.noteId))
+        .leftJoin(tagsTable, eq(noteTagsTable.tagId, tagsTable.id))
+        .where(
+            and(
+                eq(notesTable.isArchived, false),
+                eq(notesTable.userId, parseInt(session.user.id)),
+                ilike(tagsTable.name, `%${tagName}%`)
+            )
+        );
+
+    const noteIds = noteIdsData.map(i => i.noteId) ?? [];
+
+    if (noteIds.length == 0) return [];
+
+    const notesWithTags = await db
+        .select({
+            id: notesTable.id,
+            title: notesTable.title,
+            content: notesTable.content,
+            createdAt: notesTable.createdAt,
+            updatedAt: notesTable.updatedAt,
+            tags: tagsTable.name,
+        })
+        .from(notesTable)
+        .leftJoin(noteTagsTable, eq(notesTable.id, noteTagsTable.noteId))
+        .leftJoin(tagsTable, eq(noteTagsTable.tagId, tagsTable.id))
+        .where(inArray(notesTable.id, noteIds))
+
+    const notesMap = new Map();
+
+    notesWithTags.forEach((row) => {
+        if (!notesMap.has(row.id)) {
+            notesMap.set(row.id, {
+                ...row,
+                tags: [],
+            });
+        }
+
+        if (row.tags) notesMap.get(row.id).tags.push(row.tags);
+    });
+
+    return Array.from(notesMap.values()).reverse();
 };
 
 interface NotesByUserProps {

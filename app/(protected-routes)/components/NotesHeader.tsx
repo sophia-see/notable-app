@@ -11,6 +11,7 @@ import { IoIosArrowBack } from 'react-icons/io'
 import { IoArchiveOutline } from 'react-icons/io5';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import { RiResetLeftFill } from "react-icons/ri";
+import BackButton from './BackButton';
 
 export default function NotesHeader() {
   const form = useFormContext();
@@ -21,10 +22,6 @@ export default function NotesHeader() {
   const noteId = searchParams.get("noteId") ?? ""
   const isNew = noteId == "new"
   const { toast } = useToast();
-
-  const onGoBack = () => {
-      redirect(pathname);
-  }
 
   const onCancel = () => {
     form.reset();
@@ -72,10 +69,7 @@ export default function NotesHeader() {
 
   return (
     <div className="flex justify-between items-center lg:hidden">
-        <div className="flex gap-1 items-center" onClick={onGoBack}>
-            <IoIosArrowBack className={`fill-foreground`}/>
-            <span className={`text-preset-5 text-foreground`}>Go Back</span>
-        </div>
+        <BackButton />
         <div className="flex items-center gap-4">
             {!isNew &&<MdOutlineDeleteOutline onClick={onDelete} className='fill-accent-foreground'/>}
             {!isNew && isArchived ? <RiResetLeftFill   onClick={onArchive} className='stroke-accent-foreground'/> :  <IoArchiveOutline onClick={onArchive} className='stroke-accent-foreground'/>}

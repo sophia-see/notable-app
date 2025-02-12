@@ -6,8 +6,11 @@ import { HiOutlineHome } from "react-icons/hi2";
 import { IoArchiveOutline } from "react-icons/io5";
 import { IoIosArrowForward } from "react-icons/io";
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { redirect, usePathname } from 'next/navigation';
 import { IconType } from 'react-icons/lib';
+import { Option } from '@/app/(protected-routes)/components/TagsSelect';
+import { Separator } from './ui/separator';
+import { PiTag } from 'react-icons/pi';
 
 interface LinkItemProps {
     name: string;
@@ -28,8 +31,16 @@ function LinkItem ({name, path, icon: Icon, pathname}: LinkItemProps) {
     )
 }
 
-export default function Sidebar() {
+interface SidebarProps {
+    tags: Option[];
+}
+
+export default function Sidebar({tags}: SidebarProps) {
     const pathname = usePathname();
+
+    const onClickTags = (tagName: string) => {
+        redirect(`/tags/${tagName}`)
+    }
     
     return (
         <aside className={`hidden lg:block w-[272px] h-screen overflow-auto text-foreground py-3 px-4 scrollbar-hide border-r-[1px] border-border bg-background-2`}>
@@ -53,9 +64,20 @@ export default function Sidebar() {
                         <LinkItem path={"/archived"} name='Archived Notes' icon={IoArchiveOutline} pathname={pathname}/>
                     </div>
 
-                    {/* tags */}
-                    <div>
+                    <Separator />
 
+                    <div className='text-foreground text-preset-4'>
+                        Tags
+                    </div>
+                    <div className='flex flex-col gap-1'>
+                    {tags.map((tag, index) => {
+                        return (
+                            <div className='flex gap-2 py-[10px] px-[12] cursor-pointer' key={`${index}`} onClick={() => onClickTags(tag.value)}>
+                                <PiTag className='fill-foreground'/>
+                                <span className='text-preset-4 text-foreground'>{tag.value}</span>
+                            </div>
+                        )
+                    })}
                     </div>
                 </div>
             </div>

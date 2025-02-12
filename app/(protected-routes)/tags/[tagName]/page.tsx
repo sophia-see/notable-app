@@ -4,6 +4,7 @@ import { notesByUserAndTag, tagsByUser } from '@/server-actions/notes';
 import NotesList from '../../components/NotesList';
 import NotePage from '../../components/NotePage';
 import NoteSettings from '../../components/NoteSettings';
+import CreateNoteButton from '../../components/CreateNoteButton';
 
 interface TagPageProps {
   params: Promise<{
@@ -29,15 +30,20 @@ export default async function TagPage({params, searchParams}:TagPageProps) {
       : null;
 
   return (
-    <div className='flex flex-col gap-4 h-full'>
-      <div className={`${noteId ? 'hidden' : "flex flex-col gap-4"}`}>
-        <BackButton path='/tags'/>
-        <span className='text-preset-1 text-foreground'>
+    <div className='flex flex-col gap-4 h-full lg:flex-row px-8'>
+      <div className={`${!!noteId ? 'hidden' : "flex"} flex-col gap-4 lg:flex lg:w-[290px] lg:border-r-[1px] lg:py-5 lg:pr-4`}>
+        <div className='lg:hidden'>
+          <BackButton path='/tags'/>
+        </div>
+        <span className='text-preset-1 text-foreground lg:hidden'>
           Notes Tagged:{" "}
           <span className='text-accent-foreground'>
             {tagName}
           </span>
         </span>
+        <div className="hidden lg:block">
+          <CreateNoteButton />
+        </div>
         <div className='text-preset-5 text-foreground'>
           All notes with the <span className='text-accent-foreground'>"{tagName}"</span> tag are shown here.
         </div>

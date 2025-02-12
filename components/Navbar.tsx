@@ -33,6 +33,8 @@ const LINK_NAMES = [
 export default function Navbar() {
     const { isDarkMode } = useAppContext();
     const pathname = usePathname();
+    const isTags = pathname.includes("/tags");
+    const tag = pathname.split("/").at(-1);
 
     const renderTitle = React.useMemo(() => {
         return LINK_NAMES.find(i => pathname.includes(i.path))?.name ?? "";
@@ -69,8 +71,9 @@ export default function Navbar() {
             `}
         >
             {renderLogo}
-            <div className={`hidden lg:block text-preset-1 text-accent-foreground`}>
+            <div className={`hidden lg:block text-preset-1 ${isTags ? "text-foreground" : "text-accent-foreground"}`}>
                 {renderTitle}
+                <span className="text-accent-foreground">{isTags ? ` ${tag}` : ""}</span>
             </div>
             <div className="hidden lg:flex gap-4 items-center">
                 <SearchInput 

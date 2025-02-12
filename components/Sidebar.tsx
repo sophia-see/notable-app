@@ -71,10 +71,13 @@ export default function Sidebar({tags}: SidebarProps) {
                     </div>
                     <div className='flex flex-col gap-1'>
                     {tags.map((tag, index) => {
+                        const isActive = pathname.includes(tag.value);
+                        
                         return (
-                            <div className='flex gap-2 py-[10px] px-[12] cursor-pointer' key={`${index}`} onClick={() => onClickTags(tag.value)}>
+                            <div className={`flex gap-2 py-[10px] px-[12] cursor-pointer ${isActive ? "bg-background rounded-[8px]" : ""}`} key={`${index}`} onClick={() => onClickTags(tag.value)}>
                                 <PiTag className='fill-foreground'/>
                                 <span className='text-preset-4 text-foreground'>{tag.value}</span>
+                                <IoIosArrowForward className='ml-auto'/>
                             </div>
                         )
                     })}

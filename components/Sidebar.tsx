@@ -75,7 +75,7 @@ export default function Sidebar({tags}: SidebarProps) {
                         
                         return (
                             <div className={`flex gap-2 py-[10px] px-[12] cursor-pointer ${isActive ? "bg-background rounded-[8px]" : ""}`} key={`${index}`} onClick={() => onClickTags(tag.value)}>
-                                <PiTag className='fill-foreground'/>
+                                <PiTag className={isActive ? "fill-primary" : 'fill-foreground'}/>
                                 <span className='text-preset-4 text-foreground'>{tag.value}</span>
                                 <IoIosArrowForward className='ml-auto'/>
                             </div>

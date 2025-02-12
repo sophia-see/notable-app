@@ -30,7 +30,7 @@ export default async function TagPage({params, searchParams}:TagPageProps) {
       : null;
 
   return (
-    <div className='flex flex-col gap-4 h-full lg:flex-row px-8'>
+    <div className='flex flex-col gap-4 h-full lg:flex-row lg:px-8'>
       <div className={`${!!noteId ? 'hidden' : "flex"} flex-col gap-4 lg:flex lg:w-[290px] lg:border-r-[1px] lg:py-5 lg:pr-4`}>
         <div className='lg:hidden'>
           <BackButton path='/tags'/>

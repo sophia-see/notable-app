@@ -42,7 +42,8 @@ export default function TagsSelect({tags, initialSelected}:TagsSelectProps) {
   }, [initialSelected,setSelectedOptions  ])
 
   useEffect(() => {
-    formContext.setValue("tags", selectedOptions);
+    formContext.setValue("tags", selectedOptions, { shouldDirty: true});
+    
   }, [selectedOptions, formContext]);
 
   const toggleOption = (value: string) => {

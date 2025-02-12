@@ -22,11 +22,11 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         : null;
 
     return (
-        <div className="text-foreground flex h-full lg:px-8">
+        <div className="text-foreground flex lg:px-8">
             <div
                 className={`${
                     !!noteId ? "hidden" : "flex flex-col gap-4"
-                } w-full lg:flex lg:flex-col lg:gap-4 lg:w-[290px] lg:border-r-[1px]`}
+                } w-full h-full lg:flex lg:flex-col lg:gap-4 lg:w-[290px] lg:border-r-[1px]`}
             >
                 <span className="text-preset-1 text-foreground lg:hidden">
                     All Notes

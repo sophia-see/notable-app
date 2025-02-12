@@ -36,7 +36,7 @@ export default function NotesList({notes}: NotesListProps) {
     }
 
     return (
-        <div className='flex flex-col'>
+        <div className='flex flex-col h-full'>
             {
                 notesList.map((note, index) => {
                     const isNew = note.id == -1;

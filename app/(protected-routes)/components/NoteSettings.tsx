@@ -53,7 +53,7 @@ export default function NoteSettings() {
             }
         }
 
-        redirect("/home")
+        redirect(pathname)
     }
 
     const onDelete = async () => {

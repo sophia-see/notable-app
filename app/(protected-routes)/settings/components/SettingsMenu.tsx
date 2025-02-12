@@ -87,7 +87,7 @@ export default function SettingsMenu() {
             />
             <Separator />
             <div
-                className="flex items-center gap-2 py-[12.5px] lg:px-2 "
+                className="flex items-center gap-2 py-[12.5px] lg:px-2 cursor-pointer"
                 onClick={onLogout}
             >
                 <IoLogOutOutline />

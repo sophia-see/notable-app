@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Check } from "lucide-react"; // Icon for checkmark
 import { useFormContext } from "react-hook-form";
+import { Input } from "@/components/custom-ui/notes-input";
 
 export interface Option {
   value: string;
@@ -79,11 +80,11 @@ export default function TagsSelect({tags, initialSelected}:TagsSelectProps) {
           : <span className="py-3 text-muted-foreground text-preset-6 md:text-preset-5">Select tags</span>}
       </div>
       {isOpen && (
-        <div ref={dropdownRef} className="absolute w-full max-w-[300px] bg-white border p-2 shadow-md max-h-[220px] overflow-auto rounded-b-[8px]">
+        <div ref={dropdownRef} className="absolute w-full max-w-[300px] bg-background-2 border p-2 shadow-md max-h-[220px] overflow-auto rounded-b-[8px]">
           {options.map((option) => (
             <div
               key={option.value}
-              className="p-2 cursor-pointer flex gap-2 items-center hover:bg-gray-100"
+              className="p-2 cursor-pointer flex gap-2 items-center hover:bg-background text-foreground"
               onClick={() => toggleOption(option.value)}
             >
               {selectedOptions.includes(option.value) ? (
@@ -92,8 +93,8 @@ export default function TagsSelect({tags, initialSelected}:TagsSelectProps) {
               <span>{option.label}</span>
             </div>
           ))}
-          <div className="py-3 flex gap-2 items-center border-t border-gray-200">
-            <input
+          <div className="py-3 flex gap-2 items-center border-t border-border">
+            <Input
               type="text"
               className="p-2 border rounded-md w-full"
               value={newOption}

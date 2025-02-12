@@ -22,16 +22,16 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         : null;
 
     return (
-        <div className="text-foreground flex lg:px-8">
+        <div className="h-full text-foreground flex lg:px-8">
             <div
-                className={`${
-                    !!noteId ? "hidden" : "flex flex-col gap-4"
-                } w-full h-full lg:flex lg:flex-col lg:gap-4 lg:w-[290px] lg:border-r-[1px]`}
+                className={`
+                    ${!!noteId ? "hidden" : "flex flex-col gap-4"}
+                    w-full h-full lg:flex lg:flex-col lg:gap-4 lg:w-[290px] lg:border-r-[1px]`}
             >
                 <span className="text-preset-1 text-foreground lg:hidden">
                     All Notes
                 </span>
-                <div className="flex flex-col gap-4 lg:py-5 lg:pr-4">
+                <div className="flex flex-col gap-4 lg:py-5 lg:pr-4 h-full overflow-y-scroll scrollbar-hide">
                     <div className="hidden lg:block">
                         <CreateNoteButton />
                     </div>
